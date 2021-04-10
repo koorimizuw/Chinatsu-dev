@@ -1,8 +1,6 @@
 <template>
   <div v-if="pending">Wait..</div>
-  <div v-if="islogin">
-    <button>Logout</button>
-  </div>
+  <h2 v-if="islogin">ログインしています。</h2>
   <div v-if="!islogin">
     <h1>Login</h1>
     <el-input v-model="email" placeholder="E-Mail" clearable></el-input>
@@ -11,7 +9,9 @@
       placeholder="Password"
       show-password
     ></el-input>
-    <button @click="submit()">submit</button>
+    <el-button type="primary" @click="submit()">ログイン</el-button>
+    <el-button type="primary" @click="twitter()">ツイーターログイン</el-button>
+    <el-button type="primary" @click="github()">Githubログイン</el-button>
     <router-link to="/register">register</router-link>
   </div>
 </template>
@@ -31,26 +31,58 @@ const islogin = ref(false);
 firebase.auth().onAuthStateChanged((user) => {
   pending.value = false;
   if (user) {
-    ElMessage.success("ログインされました。");
     islogin.value = true;
   }
 });
+
+const showError = (msg) => {
+  switch (msg) {
+    case "auth/invalid-email":
+      ElMessage.error("アカウントが存在しません。");
+      break;
+    case "auth/wrong-password":
+      ElMessage.error("パスワードが間違います。");
+      break;
+    default:
+      ElMessage.error("ログインに失敗しました。");
+  }
+};
+
+const twitter = async () => {
+  var provider = new firebase.auth.TwitterAuthProvider();
+  await firebase
+    .auth()
+    .signInWithPopup(provider)
+    .then((_) => {
+      ElMessage.success("ログインされました。");
+    })
+    .catch((e) => {
+      showError(e.code);
+    });
+};
+
+const github = async () => {
+  var provider = new firebase.auth.GithubAuthProvider();
+  await firebase
+    .auth()
+    .signInWithPopup(provider)
+    .then((_) => {
+      ElMessage.success("ログインされました。");
+    })
+    .catch((e) => {
+      showError(e.code);
+    });
+};
 
 const submit = async () => {
   await firebase
     .auth()
     .signInWithEmailAndPassword(email.value, password.value)
+    .then((_) => {
+      ElMessage.success("ログインされました。");
+    })
     .catch((e) => {
-      switch (e.code) {
-        case "auth/invalid-email":
-          ElMessage.error("アカウントが存在しません。");
-          break;
-        case "auth/wrong-password":
-          ElMessage.error("パスワードが間違います。");
-          break;
-        default:
-          ElMessage.error("ログインに失敗しました。");
-      }
+      showError(e.code);
     });
 };
 </script>

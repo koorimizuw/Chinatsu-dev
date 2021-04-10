@@ -28,10 +28,31 @@
 </template>
 
 <script setup lang="ts">
+import { ElMessage } from "element-plus";
+import router from "../router";
 import { ref } from "vue";
 import firebase from "firebase";
 
+firebase.auth().onAuthStateChanged((user) => {
+  if (!user) {
+    router.push("/login");
+  }
+});
+
 const bookMark = ref("");
+
+const logout = async () => {
+  await firebase
+    .auth()
+    .signOut()
+    .then((_) => {
+      ElMessage.success("ログアウトされました。");
+      router.push("/");
+    })
+    .catch((e) => {
+      ElMessage.success("ログアウトエラー。");
+    });
+};
 
 const showKey = async () => {};
 const createKey = async () => {
@@ -41,10 +62,9 @@ const createKey = async () => {
     .httpsCallable("createKey")()
     .then((res) => {
       bookMark.value = res.data.key;
-      console.log(bookMark.value);
     })
     .catch((e) => {
-      console.log(e);
+      ElMessage.error("エラーが発生しました。");
     });
 };
 </script>

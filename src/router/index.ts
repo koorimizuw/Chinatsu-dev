@@ -6,7 +6,9 @@ import Register from "../pages/Register.vue"
 //@ts-ignore
 import Main from "../components/HelloWorld.vue"
 //@ts-ignore
-import Data from "../pages/Data.vue"
+import Data from "../pages/Data/Index.vue"
+//@ts-ignore
+import Playlog from "../pages/Data/Playlog.vue"
 //@ts-ignore
 import Setting from "../pages/Setting.vue"
 
@@ -30,6 +32,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/data",
     name: "Data",
     component: () => Data,
+  },
+  {
+    path: "/playlog",
+    name: "Playlog",
+    component: () => Playlog,
   },
   {
     path: "/setting",
