@@ -1,0 +1,22 @@
+{
+  "name": "element-plus-vite-starter",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "element-plus": "latest",
+    "firebase": "^8.3.2",
+    "sass": "^1.32.8",
+    "typescript": "^4.2.3",
+    "vue": "^3.0.5",
+    "vue-router": "4",
+    "vuex": "^4.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^1.0.4",
+    "@vue/compiler-sfc": "^3.0.5",
+    "vite": "^2.0.0-beta.12"
+  }
+}
