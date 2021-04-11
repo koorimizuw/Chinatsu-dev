@@ -1,11 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
-import Register from "../pages/Register.vue"
-import Main from "../components/HelloWorld.vue"
-import Data from "../pages/Data/Index.vue"
-import Playlog from "../pages/Data/Playlog.vue"
-import Setting from "../pages/Setting.vue"
-
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/login",
@@ -15,27 +9,27 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/register",
     name: "Register",
-    component: () => Register,
+    component: () => import("@/pages/Register.vue"),
   },
   {
     path: "/",
     name: "Main",
-    component: () => Main,
+    component: () => import("@/components/HelloWorld.vue"),
   },
   {
     path: "/data",
     name: "Data",
-    component: () => Data,
+    component: () => import("@/pages/Data/Index.vue"),
   },
   {
     path: "/data/playlog",
     name: "Playlog",
-    component: () => Playlog,
+    component: () => import("@/pages/Data/Playlog.vue"),
   },
   {
     path: "/setting",
     name: "Setting",
-    component: () => Setting,
+    component: () => import("@/pages/Setting.vue"),
   },
 ];
 
