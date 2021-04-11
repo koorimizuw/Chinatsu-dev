@@ -33,8 +33,6 @@
 <script setup lang="ts">
 import router from "../router";
 import firebase from "firebase";
-//@ts-ignore
-import HelloWorld from "../components/HelloWorld.vue";
 const nav = [
   { name: "メイン", link: "/", icon: "el-icon-menu" },
   { name: "データー", link: "/data", icon: "el-icon-document" },
