@@ -31,7 +31,7 @@
     <el-divider></el-divider>
     <div class="card-footer">
       <p>
-        <router-link to="/playlog">
+        <router-link to="/data/playlog">
           <el-button type="primary">プレイ履歴</el-button>
         </router-link>
       </p>

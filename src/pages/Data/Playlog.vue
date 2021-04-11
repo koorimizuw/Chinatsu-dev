@@ -1,5 +1,31 @@
 <template>
-  <el-table :data="playlog" border style="width: 100%">
+  <h2>
+    フィルター<el-button
+      class="title-icon"
+      :icon="filterOpen ? `el-icon-arrow-up` : `el-icon-arrow-down`"
+      circle
+      @click="openFilter"
+    ></el-button>
+  </h2>
+  <div v-if="filterOpen">
+    <div class="subtitle">難易度</div>
+    <p>
+      <el-checkbox-group v-model="opts.diff">
+        <el-checkbox-button
+          v-for="opts in diffOptions"
+          :label="opts"
+          :key="opts"
+          >{{ opts }}
+        </el-checkbox-button>
+      </el-checkbox-group>
+    </p>
+  </div>
+  <el-table
+    :data="playlog"
+    border
+    style="width: 100%"
+    :row-class-name="tableRowClassName"
+  >
     <el-table-column prop="playDate" label="プレイ日時" width="160">
     </el-table-column>
     <el-table-column prop="musicName" label="楽曲名"> </el-table-column>
@@ -21,7 +47,7 @@
 import { ElLoading } from "element-plus";
 import firebase from "firebase";
 import router from "../../router";
-import { onMounted, computed } from "vue";
+import { onMounted, computed, ref, reactive } from "vue";
 import { useStore } from "vuex";
 
 firebase.auth().onAuthStateChanged((user) => {
@@ -29,6 +55,12 @@ firebase.auth().onAuthStateChanged((user) => {
     router.push("/login");
   }
 });
+
+const filterOpen = ref(false);
+const opts = reactive({
+  diff: [],
+});
+const diffOptions = ["Basic", "Advanced", "Expert", "Master", "Lunatic"];
 
 const store = useStore();
 
@@ -44,4 +76,54 @@ onMounted(async () => {
     loadingInstance.close();
   }
 });
+
+const openFilter = () => {
+  filterOpen.value = !filterOpen.value;
+};
+
+const tableRowClassName = ({ row }) => {
+  switch (row.diff) {
+    case 0:
+      return "basic";
+    case 1:
+      return "advanced";
+    case 2:
+      return "expert";
+    case 3:
+      return "master";
+    case 10:
+      return "lunatic";
+  }
+};
 </script>
+
+<style lang="scss">
+.el-table {
+  .basic {
+    background: #f1f8e9 !important;
+  }
+  .advanced {
+    background: #fffde7 !important;
+  }
+  .expert {
+    background: #fce4ec !important;
+  }
+  .master {
+    background: #f3e5f5 !important;
+  }
+  .lunatic {
+    background: #fafafa !important;
+  }
+}
+</style>
+
+<style lang="scss" scoped>
+.title {
+  &-icon {
+    margin-left: 20px;
+  }
+}
+.subtitle {
+  font-size: 1.35em;
+}
+</style>

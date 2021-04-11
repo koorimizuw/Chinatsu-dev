@@ -1,22 +1,16 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-//@ts-ignore
-import Login from "../pages/Login.vue"
-//@ts-ignore
+
 import Register from "../pages/Register.vue"
-//@ts-ignore
 import Main from "../components/HelloWorld.vue"
-//@ts-ignore
 import Data from "../pages/Data/Index.vue"
-//@ts-ignore
 import Playlog from "../pages/Data/Playlog.vue"
-//@ts-ignore
 import Setting from "../pages/Setting.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/login",
     name: "Login",
-    component: () => Login,
+    component: () => import("@/pages/Login.vue"),
   },
   {
     path: "/register",
@@ -34,7 +28,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => Data,
   },
   {
-    path: "/playlog",
+    path: "/data/playlog",
     name: "Playlog",
     component: () => Playlog,
   },
