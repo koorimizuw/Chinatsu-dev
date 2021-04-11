@@ -26,35 +26,30 @@
     style="width: 100%"
     :row-class-name="tableRowClassName"
   >
-    <el-table-column prop="playDate" label="プレイ日時" width="160">
+    <el-table-column prop="play_date" label="プレイ日時" width="160">
     </el-table-column>
-    <el-table-column prop="musicName" label="楽曲名"> </el-table-column>
+    <el-table-column prop="music_name" label="楽曲名"> </el-table-column>
     <el-table-column prop="diff" label="難易度" width="100"> </el-table-column>
-    <el-table-column prop="technicalScore" label="テクニカルスコア">
+    <el-table-column prop="technical_score" label="テクニカルスコア">
     </el-table-column>
-    <el-table-column prop="battleScore" label="バトルスコア"> </el-table-column>
-    <el-table-column prop="judgeCriticalBreak" label="CBk" width="60">
+    <el-table-column prop="battle_score" label="バトルスコア">
     </el-table-column>
-    <el-table-column prop="judgeBreak" label="Bk" width="60"> </el-table-column>
-    <el-table-column prop="judgeHit" label="Hit" width="60"> </el-table-column>
-    <el-table-column prop="judgeMiss" label="Miss" width="60">
+    <el-table-column prop="judge_critical_break" label="CBk" width="60">
     </el-table-column>
-    <el-table-column prop="placeName" label="店舗"> </el-table-column>
+    <el-table-column prop="judge_break" label="Bk" width="60">
+    </el-table-column>
+    <el-table-column prop="judge_hit" label="Hit" width="60"> </el-table-column>
+    <el-table-column prop="judge_miss" label="Miss" width="60">
+    </el-table-column>
+    <el-table-column prop="place_name" label="店舗"> </el-table-column>
   </el-table>
 </template>
 
 <script setup lang="ts">
 import { ElLoading } from "element-plus";
 import firebase from "firebase";
-import router from "../../router";
 import { onMounted, computed, ref, reactive } from "vue";
 import { useStore } from "vuex";
-
-firebase.auth().onAuthStateChanged((user) => {
-  if (!user) {
-    router.push("/login");
-  }
-});
 
 const filterOpen = ref(false);
 const opts = reactive({

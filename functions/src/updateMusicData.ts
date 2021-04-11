@@ -1,7 +1,8 @@
 import { func, firestore } from "./config";
+import { getUid } from "./util";
 
 type musicDataItem = {
-  music_id?: string,
+  music_id?: number,
   over_damage: string,
   battle_score: number,
   technical_score: number,
@@ -13,6 +14,22 @@ type musicDataItem = {
 type musicData = {
   [key: string]: musicDataItem;
 };
+
+const getMusicId = async (item: any): Promise<number> => {
+  let musicSelect = firestore
+    .collection("music")
+    .where("music_name", "==", item.name)
+  if (item.genre) {
+    musicSelect = musicSelect.where("genre_name", "==", item.genre)
+  }
+
+  const musicIdSnap = await musicSelect.get()
+
+  if (musicIdSnap.docs.length == 0) {
+    return -1
+  }
+  return musicIdSnap.docs[0].data()["music_id"]
+}
 
 export const updateMusicData = func.onRequest(async (req, res) => {
   //functions.logger.info("Hello logs!", { structuredData: true });
@@ -26,38 +43,18 @@ export const updateMusicData = func.onRequest(async (req, res) => {
     return
   }
 
-  const uidSnap = await firestore
-    .collection("users")
-    .where("key", "==", body.key)
-    .get()
+  const uid = await getUid(body.key)
     .catch(_ => {
-      res.status(400).send({ "message": "Read database failed." })
-      return
-    }) as FirebaseFirestore.QuerySnapshot<FirebaseFirestore.DocumentData>
-  if (uidSnap.docs.length == 0) {
-    res.status(400).send({ "message": "Authenticate failed." })
-  }
-  const uid: string = uidSnap.docs[0].data()["uid"]
+      res.status(400).send({ "message": "Get user info failed." })
+    }) as string
 
   let musicData: musicData = {}
 
   for (let item of body.score) {
-    let musicSelect = firestore
-      .collection("music")
-      .where("music_name", "==", item.name)
-    if (item.genre) {
-      musicSelect = musicSelect.where("genre_name", "==", item.genre)
-    }
-    const musicIdSnap = await musicSelect
-      .get()
+    const musicId = await getMusicId(item)
       .catch(_ => {
-        res.status(400).send({ "message": "Get Music data failed." })
-        return
-      }) as FirebaseFirestore.QuerySnapshot<FirebaseFirestore.DocumentData>
-    if (musicIdSnap.docs.length == 0) {
-      continue
-    }
-    const musicId = String(musicIdSnap.docs[0].data()["music_id"])
+        res.status(400).send({ "message": "Get music info failed." })
+      }) as number
 
     musicData[musicId] = {
       music_id: musicId,
@@ -78,7 +75,6 @@ export const updateMusicData = func.onRequest(async (req, res) => {
     .set(musicData, { merge: true })
     .catch(_ => {
       res.status(400).send({ "message": "Insert data failed." })
-      return
     })
 
   res.status(200).send({ "message": "Data saved." })

@@ -29,15 +29,9 @@
 
 <script setup lang="ts">
 import { ElMessage } from "element-plus";
-import router from "../router";
+import router from "@/router";
 import { ref } from "vue";
 import firebase from "firebase";
-
-firebase.auth().onAuthStateChanged((user) => {
-  if (!user) {
-    router.push("/login");
-  }
-});
 
 const bookMark = ref("");
 
@@ -49,7 +43,7 @@ const logout = async () => {
       ElMessage.success("ログアウトされました。");
       router.push("/");
     })
-    .catch((e) => {
+    .catch((_) => {
       ElMessage.success("ログアウトエラー。");
     });
 };

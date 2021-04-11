@@ -5,7 +5,7 @@ export const getPlaylog = func.onCall(async (_, ctx) => {
 		return {}
 	}
 
-	const uid = ctx.auth?.uid
+	const uid = ctx.auth.uid
 
 	const playlogSnap = await firestore
 		.collection("data")

@@ -5,7 +5,7 @@ export const getUserInfo = func.onCall(async (_, ctx) => {
     return {}
   }
 
-  const uid = ctx.auth?.uid
+  const uid = ctx.auth.uid
 
   const profileSnap = await firestore
     .collection("data")

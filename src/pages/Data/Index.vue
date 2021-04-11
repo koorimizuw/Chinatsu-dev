@@ -44,15 +44,8 @@
 <script setup lang="ts">
 import { ElLoading } from "element-plus";
 import firebase from "firebase";
-import router from "../../router";
 import { onMounted, computed } from "vue";
 import { useStore } from "vuex";
-
-firebase.auth().onAuthStateChanged((user) => {
-  if (!user) {
-    router.push("/login");
-  }
-});
 
 const store = useStore();
 
