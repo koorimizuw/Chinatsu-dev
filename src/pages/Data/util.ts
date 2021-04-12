@@ -55,6 +55,15 @@ export const levelOptions = [
   "14+",
 ];
 
+export const genreOptions = [
+  "POPS＆ANIME",
+  "niconico",
+  "東方Project",
+  "VARIETY",
+  "チュウマイ",
+  "オンゲキ",
+]
+
 export const foramtDiffName = (row) => {
   switch (row.diff) {
     case 0:
@@ -99,5 +108,6 @@ export const calcRating = (score: number, level: number): number => {
     const rmrt = Math.floor((970000 - score) / 175 + 1) / 100
     rt = level - rmrt
   }
-  return Math.round(rt * 100) / 100
+  const res = Math.round(rt * 100) / 100
+  return res > 0 ? res : 0
 }

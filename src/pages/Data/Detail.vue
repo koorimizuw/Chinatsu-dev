@@ -30,6 +30,17 @@
         </el-checkbox-button>
       </el-checkbox-group>
     </p>
+    <div class="subtitle">ジャンル</div>
+    <p>
+      <el-checkbox-group v-model="opts.genre">
+        <el-checkbox-button
+          v-for="opts in genreOptions"
+          :label="opts"
+          :key="opts"
+          >{{ opts }}
+        </el-checkbox-button>
+      </el-checkbox-group>
+    </p>
     <div class="subtitle">スコアランク</div>
     <p>
       <el-checkbox-group v-model="opts.score">
@@ -69,7 +80,7 @@
     style="width: 100%"
     :row-class-name="formatRowClass"
   >
-    <el-table-column prop="music_name" label="楽曲名" width="360">
+    <el-table-column prop="music_name" label="楽曲名" width="320" sortable>
       <template #default="scope">
         <i class="el-icon-tickets"></i>
         <span style="margin-left: 10px">{{ scope.row.music_name }}</span>
@@ -104,6 +115,7 @@
       prop="technical_score"
       label="テクニカルスコア"
       width="140"
+      sortable
     >
       <template #default="scope">
         <i class="el-icon-video-play"></i>
@@ -114,7 +126,9 @@
     </el-table-column>
     <el-table-column label="ランク" width="80">
       <template #default="scope">
-        <span>{{ scope.row.rank }}</span>
+        <el-tag v-if="scope.row.rank" effect="plain">{{
+          scope.row.rank
+        }}</el-tag>
       </template>
     </el-table-column>
     <el-table-column label="Rating" width="70">
@@ -124,7 +138,12 @@
         }}</span>
       </template>
     </el-table-column>
-    <el-table-column prop="battle_score" label="バトルスコア" width="140">
+    <el-table-column
+      prop="battle_score"
+      label="バトルスコア"
+      width="140"
+      sortable
+    >
       <template #default="scope">
         <i class="el-icon-video-play"></i>
         <span style="margin-left: 10px">{{
@@ -135,6 +154,7 @@
     <el-table-column prop="over_damage" label="オーバー ダメージ" width="90" />
   </el-table>
   <el-pagination
+    class="page-nav"
     @size-change="handleSizeChange"
     @current-change="handleCurrentChange"
     :current-page="page"
@@ -153,7 +173,14 @@ import router from "@/router";
 import { onMounted, computed, ref, reactive } from "vue";
 import { useStore } from "vuex";
 import { foramtDiffName, formatRowClass, calcRating } from "./util";
-import { diffOptions, scoreRank, abLamp, fbLamp, levelOptions } from "./util";
+import {
+  diffOptions,
+  scoreRank,
+  abLamp,
+  fbLamp,
+  levelOptions,
+  genreOptions,
+} from "./util";
 
 const page = ref(1);
 const pageSizeOptions = ref([50, 100, 200, 300, 400, 500]);
@@ -174,6 +201,7 @@ const opts = reactive({
   ablamp: [],
   fblamp: [],
   level: [],
+  genre: [],
 });
 
 const store = useStore();
@@ -207,6 +235,9 @@ const filtered = computed(() => {
     if (opts.score.length !== 0 && !opts.score.includes(item.rank)) {
       continue;
     }
+    if (opts.genre.length !== 0 && !opts.genre.includes(item.genre_name)) {
+      continue;
+    }
     if (opts.ablamp.length !== 0 && !opts.ablamp.includes(item.ab_lamp)) {
       continue;
     }
@@ -226,7 +257,7 @@ const pageSlice = computed(() => {
   const itemStart = (page.value - 1) * pageSize.value;
   const itemEnd =
     itemStart + pageSize.value > filtered.value.length
-      ? filtered.value.length - 1
+      ? filtered.value.length
       : itemStart + pageSize.value;
 
   return filtered.value.slice(itemStart, itemEnd);
@@ -301,5 +332,9 @@ const pageSlice = computed(() => {
 }
 .subtitle {
   font-size: 1.35em;
+}
+
+.page-nav {
+  margin-top: 10px;
 }
 </style>

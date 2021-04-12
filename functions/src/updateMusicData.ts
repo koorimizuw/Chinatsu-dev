@@ -1,4 +1,4 @@
-import { func, firestore } from "./config";
+import { func, firestore, logger } from "./config";
 import { getUid } from "./util";
 
 type musicDataItem = {
@@ -15,17 +15,21 @@ type musicData = {
   [key: string]: musicDataItem;
 };
 
-const getMusicId = async (item: any): Promise<number> => {
+const getMusicId = async (item: any, lunatic: boolean): Promise<number> => {
   let musicSelect = firestore
     .collection("music")
     .where("music_name", "==", item.name)
   if (item.genre) {
     musicSelect = musicSelect.where("genre_name", "==", item.genre)
   }
+  if (lunatic) {
+    musicSelect = musicSelect.where("is_lunatic", "==", true)
+  }
 
   const musicIdSnap = await musicSelect.get()
 
   if (musicIdSnap.docs.length == 0) {
+    logger.error("Get music id failed.", item)
     return -1
   }
   return musicIdSnap.docs[0].data()["music_id"]
@@ -51,7 +55,8 @@ export const updateMusicData = func.onRequest(async (req, res) => {
   let musicData: musicData = {}
 
   for (let item of body.score) {
-    const musicId = await getMusicId(item)
+    const isLunatic = body.diff == "10"
+    const musicId = await getMusicId(item, isLunatic)
       .catch(_ => {
         res.status(400).send({ "message": "Get music info failed." })
       }) as number
