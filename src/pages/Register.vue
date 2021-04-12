@@ -60,7 +60,6 @@ const submit = async () => {
       }
     })
     .catch((e) => {
-      console.log(e);
       showError(e.code);
     });
 };

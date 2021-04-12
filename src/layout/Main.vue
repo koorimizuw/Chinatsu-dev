@@ -13,7 +13,7 @@
       </h3>
     </el-header>
     <el-container>
-      <el-aside>
+      <el-aside class="aside">
         <el-menu class="menu-vertical">
           <router-link v-for="(v, i) in nav" :key="i" :to="v.link">
             <el-menu-item :index="i">
@@ -40,11 +40,13 @@ const nav = [
 ];
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 a {
   text-decoration: none;
 }
+</style>
 
+<style lang="scss" scoped>
 .header {
   display: flex;
   justify-content: space-between;
@@ -52,5 +54,11 @@ a {
 
 .menu-vertical {
   height: 100%;
+}
+
+.aside {
+  @media (max-width: 1024px) {
+    width: 200px !important;
+  }
 }
 </style>

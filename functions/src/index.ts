@@ -3,8 +3,6 @@
 //
 
 export { createKey } from "./createKey"
-export { getUserInfo } from "./getUserInfo"
-export { getPlaylog } from "./getPlaylog"
 
 export { updateUserInfo } from "./updateUserInfo"
 export { updateHistory } from "./updateHistory"
