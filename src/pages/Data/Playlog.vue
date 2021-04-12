@@ -74,17 +74,11 @@
           <el-form-item label="テクニカルスコア">
             <span>{{ props.row.technical_score.toLocaleString() }}</span>
           </el-form-item>
-          <el-form-item label="ABラベル">
-            <span>{{
-              props.row.is_all_break
-                ? "All Break"
-                : props.row.is_full_combo
-                ? "Full Combo"
-                : ""
-            }}</span>
+          <el-form-item label="ABランプ">
+            <span>{{ props.ab_lamp }}</span>
           </el-form-item>
-          <el-form-item label="FBラベル">
-            <span>{{ props.row.is_full_bell ? "Full Bell" : "" }}</span>
+          <el-form-item label="FBランプ">
+            <span>{{ props.row.fb_lamp }}</span>
           </el-form-item>
           <el-divider />
           <el-form-item label="バトルスコア">
@@ -111,6 +105,22 @@
           </el-form-item>
           <el-form-item label="Miss">
             <span>{{ props.row.judge_miss }}</span>
+          </el-form-item>
+          <el-form-item label="Bell">
+            <span
+              >{{ props.row.bell_count }} /
+              {{ props.row.total_bell_count }}</span
+            >
+          </el-form-item>
+          <el-form-item label="ダメージ">
+            <span>{{ props.row.damage_count }}</span>
+          </el-form-item>
+          <el-form-item label="最大Combo数">
+            <span>{{ props.row.max_combo }}</span>
+          </el-form-item>
+          <el-divider />
+          <el-form-item label="プレイ店舗">
+            <span>{{ props.row.place_name }}</span>
           </el-form-item>
         </el-form>
       </template>
@@ -149,6 +159,11 @@
         <span style="margin-left: 10px">{{
           scope.row.technical_score.toLocaleString()
         }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column label="ランク" width="80">
+      <template #default="scope">
+        <span>{{ scope.row.rank }}</span>
       </template>
     </el-table-column>
     <el-table-column label="FB" width="60">
@@ -194,7 +209,6 @@ import router from "@/router";
 import { onMounted, computed, ref, reactive } from "vue";
 import { useStore } from "vuex";
 import { foramtDiffName, formatRowClass } from "./util";
-import { getPlaylog } from "./util";
 import { diffOptions, scoreRank, abLamp, fbLamp } from "./util";
 
 const filterOpen = ref(false);
@@ -211,8 +225,11 @@ const playlog = computed(() => store.state.playlog);
 onMounted(async () => {
   if (playlog.value.length === 0) {
     let loadingInstance = ElLoading.service({ fullscreen: true });
-    const playlogData = await getPlaylog();
-    store.dispatch("updatePlaylog", playlogData);
+    const playlogData = await firebase
+      .app()
+      .functions("asia-northeast1")
+      .httpsCallable("getPlaylog")();
+    store.dispatch("updatePlaylog", playlogData.data);
     loadingInstance.close();
   }
   if (playlog.value.length === 0) {

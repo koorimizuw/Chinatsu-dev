@@ -34,6 +34,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/pages/Data/Playlog.vue"),
   },
   {
+    path: "/data/detail",
+    name: "Detail",
+    component: () => import("@/pages/Data/Detail.vue"),
+  },
+  {
     path: "/setting",
     name: "Setting",
     component: () => import("@/pages/Setting.vue"),

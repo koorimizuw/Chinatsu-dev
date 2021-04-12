@@ -6,6 +6,7 @@ export interface GlobalState {
   count: number,
   profile: any,
   playlog: any,
+  detail: any,
 }
 
 export const StateKey: InjectionKey<Store<GlobalState>> = Symbol()
@@ -15,6 +16,7 @@ export const store = createStore({
     count: 0,
     profile: {},
     playlog: [],
+    detail: [],
   },
   mutations: {
     increment(state) {
@@ -26,6 +28,9 @@ export const store = createStore({
     commitPlaylog(state, data) {
       state.playlog = data
     },
+    commitMusicData(state, data) {
+      state.detail = data
+    },
   },
   actions: {
     updateProfile(ctx, data) {
@@ -33,6 +38,9 @@ export const store = createStore({
     },
     updatePlaylog(ctx, data) {
       ctx.commit('commitPlaylog', data)
+    },
+    updateMusicData(ctx, data) {
+      ctx.commit('commitMusicData', data)
     },
   }
 })

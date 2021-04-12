@@ -71,7 +71,7 @@ export const updateMusicData = func.onRequest(async (req, res) => {
     .collection("data")
     .doc(uid)
     .collection("score")
-    .doc(String(body.diff))
+    .doc(body.diff)
     .set(musicData, { merge: true })
     .catch(_ => {
       res.status(400).send({ "message": "Insert data failed." })

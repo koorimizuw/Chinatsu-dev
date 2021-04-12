@@ -35,7 +35,11 @@
           <el-button class="btn" type="primary">プレイ履歴</el-button>
         </router-link>
       </p>
-      <p><el-button class="btn" type="primary">楽曲データー</el-button></p>
+      <p>
+        <router-link to="/data/detail">
+          <el-button class="btn" type="primary">楽曲データー</el-button>
+        </router-link>
+      </p>
       <p><el-button class="btn" type="primary">レーティング</el-button></p>
     </div>
   </el-card>
@@ -56,7 +60,6 @@ import { ElLoading } from "element-plus";
 import firebase from "firebase";
 import { onMounted, computed, ref } from "vue";
 import { useStore } from "vuex";
-import { getUserInfo } from "./util";
 
 const noData = ref(false);
 
@@ -66,8 +69,11 @@ const profile = computed(() => store.state.profile);
 onMounted(async () => {
   if (Object.keys(profile.value).length === 0) {
     let loadingInstance = ElLoading.service({ fullscreen: true });
-    const profileData = await getUserInfo();
-    store.dispatch("updateProfile", profileData);
+    const profileData = await firebase
+      .app()
+      .functions("asia-northeast1")
+      .httpsCallable("getUserInfo")();
+    store.dispatch("updateProfile", profileData.data);
     loadingInstance.close();
   }
   if (Object.keys(profile.value).length === 0) {
