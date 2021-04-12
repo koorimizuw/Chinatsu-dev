@@ -4,3 +4,5 @@ dist
 *.local
 package-lock.json
 .env
+.firebase
+.vscode
