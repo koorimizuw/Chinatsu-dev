@@ -30,6 +30,7 @@
 <script setup lang="ts">
 import { ElMessage } from "element-plus";
 import router from "@/router";
+import { getFunctions } from '@/utils'
 import { ref } from "vue";
 import firebase from "firebase";
 
@@ -50,9 +51,7 @@ const logout = async () => {
 
 const showKey = async () => {};
 const createKey = async () => {
-  await firebase
-    .app()
-    .functions("asia-northeast1")
+  await getFunctions()
     .httpsCallable("createKey")()
     .then((res) => {
       bookMark.value = res.data.key;

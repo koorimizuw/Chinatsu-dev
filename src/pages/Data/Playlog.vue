@@ -204,10 +204,10 @@
 
 <script setup lang="ts">
 import { ElLoading } from "element-plus";
-import firebase from "firebase";
 import router from "@/router";
 import { onMounted, computed, ref, reactive } from "vue";
 import { useStore } from "vuex";
+import { getFunctions } from '@/utils'
 import { foramtDiffName, formatRowClass } from "./util";
 import { diffOptions, scoreRank, abLamp, fbLamp } from "./util";
 
@@ -225,10 +225,7 @@ const playlog = computed(() => store.state.playlog);
 onMounted(async () => {
   if (playlog.value.length === 0) {
     let loadingInstance = ElLoading.service({ fullscreen: true });
-    const playlogData = await firebase
-      .app()
-      .functions("asia-northeast1")
-      .httpsCallable("getPlaylog")();
+    const playlogData = await getFunctions().httpsCallable("getPlaylog")();
     store.dispatch("updatePlaylog", playlogData.data);
     loadingInstance.close();
   }

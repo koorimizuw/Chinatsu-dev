@@ -173,6 +173,7 @@ import router from "@/router";
 import { onMounted, computed, ref, reactive } from "vue";
 import { useStore } from "vuex";
 import { foramtDiffName, formatRowClass, calcRating } from "./util";
+import { getFunctions } from '@/utils'
 import {
   diffOptions,
   scoreRank,
@@ -210,10 +211,7 @@ const detail = computed(() => store.state.detail);
 onMounted(async () => {
   if (detail.value.length === 0) {
     let loadingInstance = ElLoading.service({ fullscreen: true });
-    const musicData = await firebase
-      .app()
-      .functions("asia-northeast1")
-      .httpsCallable("getMusicData")();
+    const musicData = await getFunctions().httpsCallable("getMusicData")();
     store.dispatch("updateMusicData", musicData.data);
     loadingInstance.close();
   }

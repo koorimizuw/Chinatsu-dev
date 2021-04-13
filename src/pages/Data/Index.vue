@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 import { ElLoading } from "element-plus";
-import firebase from "firebase";
+import { getFunctions } from '@/utils'
 import { onMounted, computed, ref } from "vue";
 import { useStore } from "vuex";
 
@@ -69,10 +69,7 @@ const profile = computed(() => store.state.profile);
 onMounted(async () => {
   if (Object.keys(profile.value).length === 0) {
     let loadingInstance = ElLoading.service({ fullscreen: true });
-    const profileData = await firebase
-      .app()
-      .functions("asia-northeast1")
-      .httpsCallable("getUserInfo")();
+    const profileData = await getFunctions().httpsCallable("getUserInfo")();
     store.dispatch("updateProfile", profileData.data);
     loadingInstance.close();
   }
