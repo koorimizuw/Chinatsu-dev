@@ -5,11 +5,7 @@
   },
   "hosting": {
     "public": "dist",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
         "source": "**",
@@ -33,7 +29,7 @@
     },
     "ui": {
       "enabled": true,
-      "port": 4000
+      "port": 4001
     }
   }
 }

@@ -1,11 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import firebase from "firebase";
 
-const publicPath = [
-  "Login",
-  "Register",
-  "Main"
-]
+const publicPath = ["Login", "Register", "Main"];
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -54,12 +50,10 @@ router.beforeEach((to, from, next) => {
   if (!publicPath.includes(<string>to.name)) {
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
-        next({ name: 'Login' })
-      } else next()
+        next({ name: "Login" });
+      } else next();
     });
-  }
-  else next()
-})
-
+  } else next();
+});
 
 export default router;

@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 import { ElLoading } from "element-plus";
-import { getFunctions } from '@/utils'
+import { getFunctions } from "@/utils";
 import { onMounted, computed, ref } from "vue";
 import { useStore } from "vuex";
 

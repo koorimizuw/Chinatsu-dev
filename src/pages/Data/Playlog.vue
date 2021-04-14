@@ -207,7 +207,7 @@ import { ElLoading } from "element-plus";
 import router from "@/router";
 import { onMounted, computed, ref, reactive } from "vue";
 import { useStore } from "vuex";
-import { getFunctions } from '@/utils'
+import { getFunctions } from "@/utils";
 import { foramtDiffName, formatRowClass } from "./util";
 import { diffOptions, scoreRank, abLamp, fbLamp } from "./util";
 

@@ -1,58 +1,51 @@
 import { firestore } from "./config";
 
 export const getUid = async (key: string): Promise<string> => {
-  const uidSnap = await firestore
+  const uidSnap = (await firestore
     .collection("users")
     .where("key", "==", key)
-    .get() as FirebaseFirestore.QuerySnapshot<FirebaseFirestore.DocumentData>
+    .get()) as FirebaseFirestore.QuerySnapshot<FirebaseFirestore.DocumentData>;
   if (uidSnap.docs.length == 0) {
-    return ''
+    return "";
   }
-  return uidSnap.docs[0].data()["uid"]
-}
+  return uidSnap.docs[0].data()["uid"];
+};
 
 export const getMusicInfo = async () => {
-  const musicInfo: any = {}
-  const QuerySnapshot = await firestore
-    .collection("music")
-    .get()
+  const QuerySnapshot = await firestore.collection("music").doc("info").get();
 
-  for (let doc of QuerySnapshot.docs) {
-    musicInfo[String(doc.data().music_id)] = doc.data()
-  }
-
-  return musicInfo
-}
+  return QuerySnapshot.data();
+};
 
 export const randomPassword = (len: number) => {
-  let str = ""
+  let str = "";
   for (let i = 0; i < len; i = i + 8) {
-    str += Math.random().toString(36).slice(-8)
+    str += Math.random().toString(36).slice(-8);
   }
-  return str
-}
+  return str;
+};
 
 export const calcRank = (score: number) => {
   if (score === 0) {
-    return null
+    return null;
   } else if (score === 1010000) {
-    return "MAX"
+    return "MAX";
   } else if (score >= 1007500) {
-    return "SSS+"
+    return "SSS+";
   } else if (score >= 1000000) {
-    return "SSS"
+    return "SSS";
   } else if (score >= 990000) {
-    return "SS"
+    return "SS";
   } else if (score >= 970000) {
-    return "S"
+    return "S";
   } else if (score >= 940000) {
-    return "AAA"
+    return "AAA";
   } else if (score >= 900000) {
-    return "AA"
+    return "AA";
   } else if (score >= 850000) {
-    return "A"
+    return "A";
   } else if (score < 850000) {
-    return ""
+    return "";
   }
-  return null
-}
+  return null;
+};

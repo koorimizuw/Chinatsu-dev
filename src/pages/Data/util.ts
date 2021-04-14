@@ -4,10 +4,10 @@ export const diffOptions = [
   { label: "Expert", value: 2 },
   { label: "Master", value: 3 },
   { label: "Lunatic", value: 10 },
-]
+];
 
 export const scoreRank = [
-  { label: "-", value: null },
+  //{ label: "-", value: null },
   { label: "A未満", value: "" },
   { label: "A", value: "A" },
   { label: "AA", value: "AA" },
@@ -62,7 +62,7 @@ export const genreOptions = [
   "VARIETY",
   "チュウマイ",
   "オンゲキ",
-]
+];
 
 export const foramtDiffName = (row) => {
   switch (row.diff) {
@@ -92,22 +92,22 @@ export const formatRowClass = ({ row }) => {
     case 10:
       return "lunatic";
   }
-}
+};
 
 export const calcRating = (score: number, level: number): number => {
-  let rt = 0
+  let rt = 0;
   if (score >= 1007500) {
-    rt = level + 2.0
+    rt = level + 2.0;
   } else if (score >= 1000000) {
-    const rmrt = Math.floor((score - 1000000) / 150) / 100
-    rt = level + 1.5 + rmrt
+    const rmrt = Math.floor((score - 1000000) / 150) / 100;
+    rt = level + 1.5 + rmrt;
   } else if (score >= 970000) {
-    const rmrt = Math.floor((score - 970000) / 200) / 100
-    rt = level + rmrt
+    const rmrt = Math.floor((score - 970000) / 200) / 100;
+    rt = level + rmrt;
   } else {
-    const rmrt = Math.floor((970000 - score) / 175 + 1) / 100
-    rt = level - rmrt
+    const rmrt = Math.floor((970000 - score) / 175 + 1) / 100;
+    rt = level - rmrt;
   }
-  const res = Math.round(rt * 100) / 100
-  return res > 0 ? res : 0
-}
+  const res = Math.round(rt * 100) / 100;
+  return res > 0 ? res : 0;
+};

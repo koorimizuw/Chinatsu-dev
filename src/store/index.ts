@@ -1,15 +1,14 @@
-import { InjectionKey } from "vue"
-import { createStore, Store, useStore as baseUseStore } from 'vuex'
-
+import { InjectionKey } from "vue";
+import { createStore, Store, useStore as baseUseStore } from "vuex";
 
 export interface GlobalState {
-  count: number,
-  profile: any,
-  playlog: any,
-  detail: any,
+  count: number;
+  profile: any;
+  playlog: any;
+  detail: any;
 }
 
-export const StateKey: InjectionKey<Store<GlobalState>> = Symbol()
+export const StateKey: InjectionKey<Store<GlobalState>> = Symbol();
 
 export const store = createStore({
   state: {
@@ -20,31 +19,31 @@ export const store = createStore({
   },
   mutations: {
     increment(state) {
-      state.count++
+      state.count++;
     },
     commitProfile(state, data) {
-      state.profile = data
+      state.profile = data;
     },
     commitPlaylog(state, data) {
-      state.playlog = data
+      state.playlog = data;
     },
     commitMusicData(state, data) {
-      state.detail = data
+      state.detail = data;
     },
   },
   actions: {
     updateProfile(ctx, data) {
-      ctx.commit('commitProfile', data)
+      ctx.commit("commitProfile", data);
     },
     updatePlaylog(ctx, data) {
-      ctx.commit('commitPlaylog', data)
+      ctx.commit("commitPlaylog", data);
     },
     updateMusicData(ctx, data) {
-      ctx.commit('commitMusicData', data)
+      ctx.commit("commitMusicData", data);
     },
-  }
-})
+  },
+});
 
 export function useStore() {
-  return baseUseStore(StateKey)
+  return baseUseStore(StateKey);
 }

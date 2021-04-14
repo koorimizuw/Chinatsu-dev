@@ -173,7 +173,7 @@ import router from "@/router";
 import { onMounted, computed, ref, reactive } from "vue";
 import { useStore } from "vuex";
 import { foramtDiffName, formatRowClass, calcRating } from "./util";
-import { getFunctions } from '@/utils'
+import { getFunctions } from "@/utils";
 import {
   diffOptions,
   scoreRank,
@@ -197,7 +197,7 @@ const handleCurrentChange = (val) => {
 
 const filterOpen = ref(false);
 const opts = reactive({
-  diff: [2, 3, 10],
+  diff: [],
   score: [],
   ablamp: [],
   fblamp: [],

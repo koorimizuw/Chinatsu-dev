@@ -2,11 +2,11 @@
 // // https://firebase.google.com/docs/functions/typescript
 //
 
-export { createKey } from "./createKey"
-export { getUserInfo } from "./getUserInfo"
-export { getPlaylog } from "./getPlaylog"
-export { getMusicData } from "./getMusicData"
+export { createKey } from "./createKey";
+export { getUserInfo } from "./getUserInfo";
+export { getPlaylog } from "./getPlaylog";
+export { getMusicData } from "./getMusicData";
 
-export { updateUserInfo } from "./updateUserInfo"
-export { updateHistory } from "./updateHistory"
-export { updateMusicData } from "./updateMusicData"
+export { updateUserInfo } from "./updateUserInfo";
+export { updateHistory } from "./updateHistory";
+export { updateMusicData } from "./updateMusicData";
