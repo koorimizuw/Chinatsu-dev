@@ -23,7 +23,7 @@
           </router-link>
         </el-menu>
       </el-aside>
-      <el-main>
+      <el-main class="main">
         <router-view />
       </el-main>
     </el-container>
@@ -59,6 +59,16 @@ a {
 .aside {
   @media (max-width: 1024px) {
     width: 200px !important;
+  }
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.main {
+  @media (max-width: 768px) {
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 </style>

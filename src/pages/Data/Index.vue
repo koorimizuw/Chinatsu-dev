@@ -40,7 +40,11 @@
           <el-button class="btn" type="primary">楽曲データー</el-button>
         </router-link>
       </p>
-      <p><el-button class="btn" type="primary">レーティング</el-button></p>
+      <p>
+        <router-link to="/data/rating">
+          <el-button class="btn" type="primary">レーティング</el-button>
+        </router-link>
+      </p>
     </div>
   </el-card>
   <div v-if="noData">

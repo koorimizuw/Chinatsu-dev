@@ -2,29 +2,7 @@ import { func, firestore, logger } from "./config";
 import { getUid, getMusicInfo, calcRank } from "./util";
 import { scoreData } from "./types";
 
-/*
-const getMusicId = async (item: any, lunatic: boolean): Promise<number> => {
-  let musicSelect = firestore
-    .collection("music")
-    .where("music_name", "==", item.name);
-  if (item.genre) {
-    musicSelect = musicSelect.where("genre_name", "==", item.genre);
-  }
-  if (lunatic) {
-    musicSelect = musicSelect.where("is_lunatic", "==", true);
-  }
-
-  const musicIdSnap = await musicSelect.get();
-
-  if (musicIdSnap.docs.length == 0) {
-    logger.error("Get music id failed.", item);
-    return -1;
-  }
-  return musicIdSnap.docs[0].data()["music_id"];
-};*/
-
 export const updateMusicData = func.onRequest(async (req, res) => {
-  //functions.logger.info("Hello logs!", { structuredData: true });
   res.set("Access-Control-Allow-Origin", "*");
   res.set("Access-Control-Allow-Headers", "*");
 

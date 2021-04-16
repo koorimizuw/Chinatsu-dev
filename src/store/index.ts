@@ -16,6 +16,7 @@ export const store = createStore({
     profile: {},
     playlog: [],
     detail: [],
+    rating: {},
   },
   mutations: {
     increment(state) {
@@ -30,6 +31,9 @@ export const store = createStore({
     commitMusicData(state, data) {
       state.detail = data;
     },
+    commitRatingData(state, data) {
+      state.rating = data;
+    },
   },
   actions: {
     updateProfile(ctx, data) {
@@ -40,6 +44,9 @@ export const store = createStore({
     },
     updateMusicData(ctx, data) {
       ctx.commit("commitMusicData", data);
+    },
+    updateRatingData(ctx, data) {
+      ctx.commit("commitRatingData", data);
     },
   },
 });
