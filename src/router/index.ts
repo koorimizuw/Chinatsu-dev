@@ -35,6 +35,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/pages/Data/Detail.vue"),
   },
   {
+    path: "/data/rating",
+    name: "Rating",
+    component: () => import("@/pages/Data/Rating.vue"),
+  },
+  {
     path: "/setting",
     name: "Setting",
     component: () => import("@/pages/Setting.vue"),

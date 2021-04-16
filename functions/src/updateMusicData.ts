@@ -1,26 +1,6 @@
 import { func, firestore, logger } from "./config";
 import { getUid, getMusicInfo, calcRank } from "./util";
-
-type musicDataItem = {
-  music_id?: number;
-  diff: number;
-  level: number;
-  music_name: string;
-  artist_name: string;
-  genre_name: string;
-  boss_level: number;
-  level_name: string;
-  over_damage: string;
-  battle_score: number;
-  technical_score: number;
-  is_full_bell: boolean;
-  is_full_combo: boolean;
-  is_all_break: boolean;
-};
-
-type musicData = {
-  [key: string]: musicDataItem;
-};
+import { scoreData } from "./types";
 
 /*
 const getMusicId = async (item: any, lunatic: boolean): Promise<number> => {
@@ -59,7 +39,7 @@ export const updateMusicData = func.onRequest(async (req, res) => {
     res.status(400).send({ message: "Get user info failed." });
   })) as string;
 
-  let musicData: musicData = {};
+  let musicData: scoreData = {};
 
   const isLunatic = body.diff == "10";
   const musicInfo: any = await getMusicInfo().catch((_) => {
@@ -81,7 +61,6 @@ export const updateMusicData = func.onRequest(async (req, res) => {
     }
 
     item.diff = Number(body.diff);
-    item.music_name = songInfo.music_name;
     item.level = songInfo.level[body.diff];
     item.artist_name = songInfo.artist_name;
     item.genre_name = songInfo.genre_name;

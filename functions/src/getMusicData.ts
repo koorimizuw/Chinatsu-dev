@@ -1,4 +1,5 @@
 import { func, firestore } from "./config";
+import { scoreDataItem } from "./types";
 
 export const getMusicData = func.onCall(async (_, ctx) => {
   if (!ctx.auth) {
@@ -7,7 +8,7 @@ export const getMusicData = func.onCall(async (_, ctx) => {
 
   const uid = ctx.auth.uid;
 
-  const scoreData: any[] = [];
+  const scoreData: scoreDataItem[] = [];
 
   const querySnapshot = await firestore
     .collection("data")
