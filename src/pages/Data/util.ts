@@ -111,3 +111,41 @@ export const calcRating = (score: number, level: number): number => {
   const res = Math.round(rt * 100) / 100;
   return res > 0 ? res : 0;
 };
+
+export const cases = [
+  {
+    name: "new",
+    str: "新曲枠",
+    text:
+      "現バージョンで追加された楽曲の内、テクニカルスコアによるレーティング値が高い順に15曲が表示されます。",
+  },
+  {
+    name: "best",
+    str: "ベスト枠",
+    text:
+      "以前のバージョンで追加された楽曲の内、テクニカルスコアによるレーティング値が高い順に30曲が表示されます。",
+  },
+  {
+    name: "recent",
+    str: "リーセント枠",
+    text:
+      "最近遊んだ楽曲の内、テクニカルスコアによるレーティング値が高い10曲が表示されます。（テクニカルハイスコアとは異なる数値が表示されます。）",
+  },
+  {
+    name: "candidate",
+    str: "候補曲",
+    text:
+      "全楽曲のレーティング対象（新曲）（ベスト）に入っていない曲の内、テクニカルスコアによるレーティング値が高い順に最大20曲が表示されます。",
+  },
+];
+
+export const tableWidth = (v1: number, v2: number) => {
+  if (window.innerWidth <= 480) {
+    return v2;
+  }
+  return v1;
+};
+
+export const isMax = (score: number) => {
+  return score >= 1007500 ? "font-weight: 800;" : "";
+};

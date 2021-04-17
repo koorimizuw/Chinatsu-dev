@@ -1,15 +1,6 @@
 <template>
-  <img alt="Vue logo" class="element-plus-logo" src="../assets/logo.png" />
-  <h1>{{ msg }}</h1>
-
-  <el-button icon="el-icon-success" type="primary" @click="increment"
-    >count is: {{ count }}</el-button
-  >
-
-  <p>
-    Edit
-    <code>components/HelloWorld.vue</code> to test hot module replacement.
-  </p>
+  <h1>Welcome to Chinatsu.</h1>
+  <p>メニューから項目を選択してください。</p>
 </template>
 
 <script setup lang="ts">

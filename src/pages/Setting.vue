@@ -1,5 +1,5 @@
 <template>
-  <el-tabs tab-position="left">
+  <el-tabs class="container" :tab-position="isMobile() ? 'top' : 'left'">
     <el-tab-pane label="アカウント">
       <h2 class="subtitle">ログアウト</h2>
       <p>一度ログアウトすると、再ログインが必要になります。</p>
@@ -15,8 +15,8 @@
         生成したことがない場合は「新しいブックマークを生成」をクリックしてください。
       </p>
       <el-button type="primary" @click="showKey()"
-        >ブックマークを表示</el-button
-      >
+        >ブックマークを表示
+      </el-button>
       <el-button type="danger" @click="createKey()"
         >新しいブックマークを生成</el-button
       >
@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { ElMessage } from "element-plus";
 import router from "@/router";
-import { getFunctions } from '@/utils'
+import { getFunctions, isMobile } from "@/utils";
 import { ref } from "vue";
 import firebase from "firebase";
 
@@ -65,5 +65,18 @@ const createKey = async () => {
 <style lang="scss" scoped>
 .subtitle {
   margin-top: 0;
+}
+
+.el-button {
+  margin-left: 10px;
+}
+.el-button + .el-button {
+  @media (max-width: 768px) {
+    margin-top: 10px;
+  }
+}
+
+.container {
+  margin: 0 10px;
 }
 </style>

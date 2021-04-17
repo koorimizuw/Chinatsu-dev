@@ -27,8 +27,8 @@
       <div>{{ profile.play_count }}</div>
     </div>
     <el-divider content-position="left">コメント</el-divider>
-    <div>{{ profile.comment }}</div>
-    <el-divider></el-divider>
+    <div style="margin: 5px">{{ profile.comment }}</div>
+    <el-divider />
     <div class="card-footer">
       <p>
         <router-link to="/data/playlog">
@@ -74,11 +74,13 @@ onMounted(async () => {
   if (Object.keys(profile.value).length === 0) {
     let loadingInstance = ElLoading.service({ fullscreen: true });
     const profileData = await getFunctions().httpsCallable("getUserInfo")();
-    store.dispatch("updateProfile", profileData.data);
-    loadingInstance.close();
-  }
-  if (Object.keys(profile.value).length === 0) {
-    noData.value = true;
+    if (profileData.data) {
+      store.dispatch("updateProfile", profileData.data);
+      loadingInstance.close();
+    } else {
+      noData.value = true;
+      loadingInstance.close();
+    }
   }
 });
 </script>
@@ -95,11 +97,14 @@ onMounted(async () => {
 
 .info-row {
   display: flex;
-  margin: 10px 0;
+  margin: 10px 5px;
   font-size: 0.9em;
   color: #555;
   :first-child {
     width: 200px;
+    @media (max-width: 480px) {
+      width: 120px;
+    }
   }
 }
 

@@ -70,6 +70,7 @@ const login = async (provider: firebase.auth.TwitterAuthProvider) => {
       router.push("/data");
     })
     .catch((e) => {
+      console.log(e);
       showError(e.code);
     });
 };

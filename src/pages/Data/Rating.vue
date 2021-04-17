@@ -1,7 +1,7 @@
 <template>
   <p>
     <el-switch
-      v-if="isMobile"
+      v-if="isMobile()"
       v-model="showDetail"
       active-text="詳細"
       inactive-text="概略"
@@ -11,7 +11,7 @@
   <el-card v-for="(cas, i) in cases" :key="i" class="card">
     <template #header>
       <div class="card-header">
-        <div class="name">{{ cas.str }}</div>
+        <div class="title">{{ cas.str }}</div>
         <p>
           {{ cas.text }}
         </p>
@@ -28,13 +28,15 @@
         prop="music_name"
         label="楽曲名"
         sortable
-        :width="musicNameWidth"
+        :width="tableWidth(320, 180)"
       >
         <template #default="scope">
-          <i v-if="showDetail" class="el-icon-tickets"></i>
-          <span :style="showDetail ? 'margin-left: 10px' : ''">{{
-            scope.row.music_name
-          }}</span>
+          <i v-if="!isMobile()" class="el-icon-tickets"></i>
+          <span
+            :class="{ name: !showDetail }"
+            :style="!isMobile() ? 'margin-left: 10px' : ''"
+            >{{ scope.row.music_name }}</span
+          >
         </template>
       </el-table-column>
       <el-table-column
@@ -59,12 +61,12 @@
       <el-table-column
         prop="technical_score"
         label="スコア"
-        :width="scoreWidth"
+        :width="tableWidth(120, 100)"
         sortable
       >
         <template #default="scope">
-          <i v-if="showDetail" class="el-icon-video-play"></i>
-          <span :style="showDetail ? 'margin-left: 10px' : ''">{{
+          <i v-if="!isMobile()" class="el-icon-video-play"></i>
+          <span :style="!isMobile() ? 'margin-left: 10px' : ''">{{
             scope.row.technical_score.toLocaleString()
           }}</span>
         </template>
@@ -84,8 +86,8 @@
       />
       <el-table-column
         label="Rating"
-        width="70"
-        :fixed="isMobile ? 'right' : false"
+        width="80"
+        :fixed="isMobile() ? 'right' : false"
       >
         <template #default="scope">
           <span :style="isMax(scope.row.technical_score)">{{
@@ -103,82 +105,40 @@ import firebase from "firebase";
 import router from "@/router";
 import { onMounted, computed, ref } from "vue";
 import { useStore } from "vuex";
-import { calcRating, foramtDiffName, formatRowClass } from "./util";
-import { getFunctions } from "@/utils";
+import { getFunctions, isMobile } from "@/utils";
+import {
+  cases,
+  calcRating,
+  foramtDiffName,
+  formatRowClass,
+  tableWidth,
+  isMax,
+} from "./util";
 
 const store = useStore();
-
-const cases = [
-  {
-    name: "new",
-    str: "新曲枠",
-    text:
-      "現バージョンで追加された楽曲の内、テクニカルスコアによるレーティング値が高い順に15曲が表示されます。",
-  },
-  {
-    name: "best",
-    str: "ベスト枠",
-    text:
-      "以前のバージョンで追加された楽曲の内、テクニカルスコアによるレーティング値が高い順に30曲が表示されます。",
-  },
-  {
-    name: "recent",
-    str: "リーセント枠",
-    text:
-      "最近遊んだ楽曲の内、テクニカルスコアによるレーティング値が高い10曲が表示されます。（テクニカルハイスコアとは異なる数値が表示されます。）",
-  },
-  {
-    name: "candidate",
-    str: "候補曲",
-    text:
-      "全楽曲のレーティング対象（新曲）（ベスト）に入っていない曲の内、テクニカルスコアによるレーティング値が高い順に最大20曲が表示されます。",
-  },
-];
 const rating = computed(() => store.state.rating);
+
 onMounted(async () => {
-  if (Object.keys(rating.value).length === 0) {
+  if (!Object.keys(rating.value).length) {
     let loadingInstance = ElLoading.service({ fullscreen: true });
     const ratingData = await getFunctions().httpsCallable("getRatingData")();
-    store.dispatch("updateRatingData", ratingData.data);
-    loadingInstance.close();
+    if (ratingData.data) {
+      store.dispatch("updateRatingData", ratingData.data);
+      loadingInstance.close();
+    } else {
+      router.push("/data");
+      loadingInstance.close();
+    }
   }
-  if (rating.value.length === 0) {
-    router.push("/data");
-  }
-});
-
-const isMobile = computed(() => {
-  if (window.innerWidth <= 600) {
-    console.log("ismobile");
-    return true;
-  }
-  return false;
 });
 
 const showDetailInfo = computed(() => {
-  if (isMobile.value) {
+  if (isMobile()) {
     return false;
   }
   return true;
 });
 const showDetail = ref(showDetailInfo.value);
-
-const musicNameWidth = computed(() => {
-  if (isMobile.value) {
-    return 180;
-  }
-  return 320;
-});
-const scoreWidth = computed(() => {
-  if (isMobile.value) {
-    return 100;
-  }
-  return 120;
-});
-
-const isMax = (score: number) => {
-  return score >= 1007500 ? "font-weight: 800;" : "";
-};
 </script>
 
 <style lang="scss">
@@ -189,25 +149,50 @@ const isMax = (score: number) => {
   width: 300px;
 }
 .el-table {
-  .basic .table-diff {
-    background: #81c784 !important;
-    border-color: #66bb6a !important;
+  .basic {
+    .name {
+      color: #2e7d32;
+    }
+    .table-diff {
+      background: #81c784 !important;
+      border-color: #66bb6a !important;
+    }
   }
-  .advanced .table-diff {
-    background: #ffb74d !important;
-    border-color: #ffa726 !important;
+  .advanced {
+    .name {
+      color: #f9a825;
+    }
+    .table-diff {
+      background: #ffb74d !important;
+      border-color: #ffa726 !important;
+    }
   }
-  .expert .table-diff {
-    background: #f06292 !important;
-    border-color: #ec407a !important;
+  .expert {
+    .name {
+      color: #ad1457;
+    }
+    .table-diff {
+      background: #f06292 !important;
+      border-color: #ec407a !important;
+    }
   }
-  .master .table-diff {
-    background: #ba68c8 !important;
-    border-color: #ab47bc !important;
+  .master {
+    .name {
+      color: #7b1fa2;
+    }
+    .table-diff {
+      background: #ba68c8 !important;
+      border-color: #ab47bc !important;
+    }
   }
-  .lunatic .table-diff {
-    background: #777 !important;
-    border-color: #333 !important;
+  .lunatic {
+    .name {
+      color: #666;
+    }
+    .table-diff {
+      background: #777 !important;
+      border-color: #333 !important;
+    }
   }
 
   .music-name {
@@ -226,7 +211,7 @@ const isMax = (score: number) => {
 .card {
   margin-bottom: 20px;
 }
-.name {
+.title {
   margin-top: 10px;
   font-size: 1.6em;
 }

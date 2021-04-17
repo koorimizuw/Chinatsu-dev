@@ -9,3 +9,10 @@ export function getFunctions() {
   }*/
   return app.functions("asia-northeast1"); // for prod
 }
+
+export const isMobile = () => {
+  if (window.innerWidth <= 600) {
+    return true;
+  }
+  return false;
+};

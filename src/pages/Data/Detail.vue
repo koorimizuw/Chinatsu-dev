@@ -1,78 +1,80 @@
 <template>
-  <h2>
-    フィルター<el-button
-      class="title-icon"
-      :icon="filterOpen ? `el-icon-arrow-up` : `el-icon-arrow-down`"
-      circle
-      @click="openFilter"
-    ></el-button>
-  </h2>
-  <div v-if="filterOpen">
-    <div class="subtitle">難易度</div>
-    <p>
-      <el-checkbox-group v-model="opts.diff">
-        <el-checkbox-button
-          v-for="opts in diffOptions"
-          :label="opts.value"
-          :key="opts"
-          >{{ opts.label }}
-        </el-checkbox-button>
-      </el-checkbox-group>
-    </p>
-    <div class="subtitle">レベル</div>
-    <p>
-      <el-checkbox-group v-model="opts.level">
-        <el-checkbox-button
-          v-for="opts in levelOptions"
-          :label="opts"
-          :key="opts"
-          >{{ opts }}
-        </el-checkbox-button>
-      </el-checkbox-group>
-    </p>
-    <div class="subtitle">ジャンル</div>
-    <p>
-      <el-checkbox-group v-model="opts.genre">
-        <el-checkbox-button
-          v-for="opts in genreOptions"
-          :label="opts"
-          :key="opts"
-          >{{ opts }}
-        </el-checkbox-button>
-      </el-checkbox-group>
-    </p>
-    <div class="subtitle">スコアランク</div>
-    <p>
-      <el-checkbox-group v-model="opts.score">
-        <el-checkbox-button
-          v-for="opts in scoreRank"
-          :label="opts.value"
-          :key="opts"
-          >{{ opts.label }}
-        </el-checkbox-button>
-      </el-checkbox-group>
-    </p>
-    <div class="subtitle">クリアランプ</div>
-    <p>
-      <el-checkbox-group v-model="opts.ablamp">
-        <el-checkbox-button
-          v-for="opts in abLamp"
-          :label="opts.value"
-          :key="opts"
-          >{{ opts.label }}
-        </el-checkbox-button>
-      </el-checkbox-group>
-    </p>
-    <p>
-      <el-checkbox-group v-model="opts.fblamp">
-        <el-checkbox-button
-          v-for="opts in fbLamp"
-          :label="opts.value"
-          :key="opts"
-          >{{ opts.label }}
-        </el-checkbox-button>
-      </el-checkbox-group>
-    </p>
+  <div class="filter">
+    <h2>
+      フィルター<el-button
+        class="title-icon"
+        :icon="filterOpen ? `el-icon-arrow-up` : `el-icon-arrow-down`"
+        circle
+        @click="openFilter"
+      ></el-button>
+    </h2>
+    <div v-if="filterOpen">
+      <div class="subtitle">難易度</div>
+      <p>
+        <el-checkbox-group v-model="opts.diff">
+          <el-checkbox-button
+            v-for="opts in diffOptions"
+            :label="opts.value"
+            :key="opts"
+            >{{ opts.label }}
+          </el-checkbox-button>
+        </el-checkbox-group>
+      </p>
+      <div class="subtitle">レベル</div>
+      <p>
+        <el-checkbox-group v-model="opts.level">
+          <el-checkbox-button
+            v-for="opts in levelOptions"
+            :label="opts"
+            :key="opts"
+            >{{ opts }}
+          </el-checkbox-button>
+        </el-checkbox-group>
+      </p>
+      <div class="subtitle">ジャンル</div>
+      <p>
+        <el-checkbox-group v-model="opts.genre">
+          <el-checkbox-button
+            v-for="opts in genreOptions"
+            :label="opts"
+            :key="opts"
+            >{{ opts }}
+          </el-checkbox-button>
+        </el-checkbox-group>
+      </p>
+      <div class="subtitle">スコアランク</div>
+      <p>
+        <el-checkbox-group v-model="opts.score">
+          <el-checkbox-button
+            v-for="opts in scoreRank"
+            :label="opts.value"
+            :key="opts"
+            >{{ opts.label }}
+          </el-checkbox-button>
+        </el-checkbox-group>
+      </p>
+      <div class="subtitle">クリアランプ</div>
+      <p>
+        <el-checkbox-group v-model="opts.ablamp">
+          <el-checkbox-button
+            v-for="opts in abLamp"
+            :label="opts.value"
+            :key="opts"
+            >{{ opts.label }}
+          </el-checkbox-button>
+        </el-checkbox-group>
+      </p>
+      <p>
+        <el-checkbox-group v-model="opts.fblamp">
+          <el-checkbox-button
+            v-for="opts in fbLamp"
+            :label="opts.value"
+            :key="opts"
+            >{{ opts.label }}
+          </el-checkbox-button>
+        </el-checkbox-group>
+      </p>
+    </div>
   </div>
   <el-table
     :data="pageSlice"
@@ -99,7 +101,7 @@
         }}</el-tag>
       </template>
     </el-table-column>
-    <el-table-column prop="level" label="譜面定数" width="60" />
+    <el-table-column prop="level" label="譜面定数" width="65" sortable />
     <el-table-column label="FB" width="60">
       <template #default="scope">
         <el-tag v-if="scope.row.is_full_bell" class="fb-tag">FB</el-tag>
@@ -209,14 +211,16 @@ const store = useStore();
 
 const detail = computed(() => store.state.detail);
 onMounted(async () => {
-  if (detail.value.length === 0) {
+  if (!detail.value.length) {
     let loadingInstance = ElLoading.service({ fullscreen: true });
     const musicData = await getFunctions().httpsCallable("getMusicData")();
-    store.dispatch("updateMusicData", musicData.data);
-    loadingInstance.close();
-  }
-  if (detail.value.length === 0) {
-    router.push("/data");
+    if (musicData.data.length) {
+      store.dispatch("updateMusicData", musicData.data);
+      loadingInstance.close();
+    } else {
+      router.push("/data");
+      loadingInstance.close();
+    }
   }
 });
 
@@ -334,5 +338,9 @@ const pageSlice = computed(() => {
 
 .page-nav {
   margin-top: 10px;
+}
+
+.filter {
+  margin: 0 10px;
 }
 </style>

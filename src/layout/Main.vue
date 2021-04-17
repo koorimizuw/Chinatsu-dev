@@ -3,25 +3,25 @@
     <el-header class="header">
       <h3>Chinatsu.</h3>
       <h3>
-        <router-link to="/login"
-          ><el-button
-            type="primary"
-            icon="el-icon-user-solid"
-            circle
-          ></el-button
-        ></router-link>
+        <el-button
+          class="menu-icon"
+          @click="drawer = true"
+          icon="el-icon-menu"
+          circle
+        ></el-button>
       </h3>
     </el-header>
     <el-container>
+      <el-drawer
+        title="Menu"
+        v-model="drawer"
+        direction="left"
+        destroy-on-close
+      >
+        <Menu />
+      </el-drawer>
       <el-aside class="aside">
-        <el-menu class="menu-vertical">
-          <router-link v-for="(v, i) in nav" :key="i" :to="v.link">
-            <el-menu-item :index="i">
-              <i :class="v.icon"></i>
-              <template #title>{{ v.name }}</template>
-            </el-menu-item>
-          </router-link>
-        </el-menu>
+        <Menu />
       </el-aside>
       <el-main class="main">
         <router-view />
@@ -31,18 +31,30 @@
 </template>
 
 <script setup lang="ts">
-import router from "../router";
-import firebase from "firebase";
-const nav = [
-  { name: "メイン", link: "/", icon: "el-icon-menu" },
-  { name: "データー", link: "/data", icon: "el-icon-document" },
-  { name: "設定", link: "/setting", icon: "el-icon-setting" },
-];
+//@ts-ignore
+import Menu from "./Menu.vue";
+import { ref } from "vue";
+
+const drawer = ref(false);
 </script>
 
 <style lang="scss">
+html {
+  font-family: "Noto Sans JP", sans-serif;
+}
 a {
   text-decoration: none;
+}
+
+.el-drawer {
+  margin-left: 30px;
+  margin-top: 30px;
+  min-width: 280px;
+  height: 50% !important;
+}
+
+.el-drawer__body {
+  overflow: scroll;
 }
 </style>
 
@@ -54,6 +66,13 @@ a {
 
 .menu-vertical {
   height: 100%;
+}
+
+.menu-icon {
+  display: none;
+  @media (max-width: 768px) {
+    display: block;
+  }
 }
 
 .aside {

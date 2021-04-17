@@ -23,10 +23,10 @@ export type scoreData = {
 };
 
 export type ratingScoreDataItem = {
-  name: string;
+  music_name: string;
   diff: number;
   score: number;
-  genre?: string;
+  genre_name?: string;
   artist?: string;
 };
 

@@ -6,6 +6,7 @@ export interface GlobalState {
   profile: any;
   playlog: any;
   detail: any;
+  rating: any;
 }
 
 export const StateKey: InjectionKey<Store<GlobalState>> = Symbol();
