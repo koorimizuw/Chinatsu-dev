@@ -77,7 +77,7 @@
       </p>
     </div>
   </div>
-  <el-table :data="filtered" ref="filterTable" style="width: 100%">
+  <el-table :data="filtered" style="width: 100%">
     <el-table-column type="expand" :width="tableWidth(45, 30)">
       <template #default="props">
         <el-form label-position="left" inline class="table-expand">
@@ -140,25 +140,34 @@
           </el-form-item>
           <el-divider />
           <el-form-item label="Critical Break">
-            <span>{{ props.row.judge_critical_break }}</span>
+            <el-tag size="small" class="critical-break">{{
+              props.row.judge_critical_break
+            }}</el-tag>
           </el-form-item>
           <el-form-item label="Break">
-            <span>{{ props.row.judge_break }}</span>
+            <el-tag size="small" class="break">{{
+              props.row.judge_break
+            }}</el-tag>
           </el-form-item>
           <el-form-item label="Hit">
-            <span>{{ props.row.judge_hit }}</span>
+            <el-tag size="small" class="hit">{{ props.row.judge_hit }}</el-tag>
           </el-form-item>
           <el-form-item label="Miss">
-            <span>{{ props.row.judge_miss }}</span>
+            <el-tag size="small" class="miss">{{
+              props.row.judge_miss
+            }}</el-tag>
           </el-form-item>
           <el-form-item label="Bell">
-            <span
-              >{{ props.row.bell_count }} /
-              {{ props.row.total_bell_count }}</span
-            >
+            <el-tag type="warning" size="small">
+              <i class="el-icon-bell"></i>
+              {{ props.row.bell_count }} /
+              {{ props.row.total_bell_count }}
+            </el-tag>
           </el-form-item>
           <el-form-item label="ダメージ">
-            <span>{{ props.row.damage_count }}</span>
+            <el-tag type="danger" size="small">{{
+              props.row.damage_count
+            }}</el-tag>
           </el-form-item>
           <el-form-item label="最大Combo数">
             <span>{{ props.row.max_combo }}</span>
@@ -277,6 +286,9 @@
       label="Critical Break"
       width="80"
     >
+      <template #default="scope">
+        <span class="critical-break">{{ scope.row.judge_critical_break }}</span>
+      </template>
     </el-table-column>
     <el-table-column
       v-if="showDetail"
@@ -284,8 +296,14 @@
       label="Break"
       width="65"
     >
+      <template #default="scope">
+        <span class="break">{{ scope.row.judge_break }}</span>
+      </template>
     </el-table-column>
     <el-table-column v-if="showDetail" prop="judge_hit" label="Hit" width="60">
+      <template #default="scope">
+        <span class="hit">{{ scope.row.judge_hit }}</span>
+      </template>
     </el-table-column>
     <el-table-column
       v-if="showDetail"
@@ -293,6 +311,9 @@
       label="Miss"
       width="60"
     >
+      <template #default="scope">
+        <span class="miss">{{ scope.row.judge_miss }}</span>
+      </template>
     </el-table-column>
     <el-table-column
       v-if="showDetail"
@@ -411,6 +432,29 @@ const showDetail = ref(showDetailInfo.value);
   }
 }
 
+.el-tag {
+  &.critical-break {
+    color: #fff;
+    background: #f9a825 !important;
+    border-color: #f57f17 !important;
+  }
+  &.break {
+    color: #fff;
+    background: #ff8f00 !important;
+    border-color: #ff6f00 !important;
+  }
+  &.hit {
+    color: #fff;
+    background: #0288d1 !important;
+    border-color: #0277bd !important;
+  }
+  &.miss {
+    color: #fff;
+    background: #888 !important;
+    border-color: #666 !important;
+  }
+}
+
 .ab-tag {
   color: #fff;
   background: #ffd54f !important;
@@ -447,7 +491,9 @@ const showDetail = ref(showDetailInfo.value);
     }
   }
   .el-form-item__content {
-    line-height: 28px;
+    @media (max-width: 480px) {
+      line-height: 28px;
+    }
   }
   .el-form-item {
     margin-right: 0;

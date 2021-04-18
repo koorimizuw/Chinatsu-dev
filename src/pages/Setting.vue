@@ -21,8 +21,12 @@
         >新しいブックマークを生成</el-button
       >
       <div style="margin: 20px 0"></div>
-      <el-input v-if="bookMark" type="textarea" autosize v-model="bookMark">
-      </el-input>
+      <el-input
+        v-if="secretKey"
+        type="textarea"
+        autosize
+        v-model="bookmarklet"
+      />
     </el-tab-pane>
   </el-tabs>
 </template>
@@ -31,10 +35,10 @@
 import { ElMessage } from "element-plus";
 import router from "@/router";
 import { getFunctions, isMobile } from "@/utils";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import firebase from "firebase";
 
-const bookMark = ref("");
+const secretKey = ref("");
 
 const logout = async () => {
   await firebase
@@ -49,14 +53,27 @@ const logout = async () => {
     });
 };
 
-const showKey = async () => {};
+const bookmarklet = computed(() => {
+  return `javascript: (function (d, s, t) {t = d.createElement("chinatsu-token");t.textContent = "${secretKey.value}";d.getElementsByTagName("head")[0].appendChild(t);s = d.createElement("script");s.src = "https://firebasestorage.googleapis.com/v0/b/chinatsu-dev.appspot.com/o/getOngekiScore.js?alt=media&token=51c3e5e2-691c-4a33-a5de-e745f36cd462";d.getElementsByTagName("head")[0].appendChild(s);})(document);`;
+});
+
+const showKey = async () => {
+  await getFunctions()
+    .httpsCallable("getKey")()
+    .then((res) => {
+      secretKey.value = res.data;
+    })
+    .catch((_) => {
+      ElMessage.error("エラーが発生しました。");
+    });
+};
 const createKey = async () => {
   await getFunctions()
     .httpsCallable("createKey")()
     .then((res) => {
-      bookMark.value = res.data.key;
+      secretKey.value = res.data.key;
     })
-    .catch((e) => {
+    .catch((_) => {
       ElMessage.error("エラーが発生しました。");
     });
 };

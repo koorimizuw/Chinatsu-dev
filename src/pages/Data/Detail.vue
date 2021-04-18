@@ -78,14 +78,21 @@
   </div>
   <el-table
     :data="pageSlice"
-    ref="filterTable"
     style="width: 100%"
     :row-class-name="formatRowClass"
   >
-    <el-table-column prop="music_name" label="楽曲名" width="320" sortable>
+    <el-table-column
+      prop="music_name"
+      label="楽曲名"
+      sortable
+      fixed="left"
+      :width="tableWidth(320, 180)"
+    >
       <template #default="scope">
-        <i class="el-icon-tickets"></i>
-        <span style="margin-left: 10px">{{ scope.row.music_name }}</span>
+        <i v-if="!isMobile()" class="el-icon-tickets"></i>
+        <span :style="!isMobile() ? 'margin-left: 10px' : ''">{{
+          scope.row.music_name
+        }}</span>
       </template>
     </el-table-column>
     <el-table-column prop="genre_name" label="カテゴリー" width="130" />
@@ -115,13 +122,13 @@
     </el-table-column>
     <el-table-column
       prop="technical_score"
-      label="テクニカルスコア"
-      width="140"
+      label="スコア"
+      :width="tableWidth(120, 100)"
       sortable
     >
       <template #default="scope">
-        <i class="el-icon-video-play"></i>
-        <span style="margin-left: 10px">{{
+        <i v-if="!isMobile()" class="el-icon-video-play"></i>
+        <span :style="!isMobile() ? 'margin-left: 10px' : ''">{{
           scope.row.technical_score.toLocaleString()
         }}</span>
       </template>
@@ -143,12 +150,12 @@
     <el-table-column
       prop="battle_score"
       label="バトルスコア"
-      width="140"
+      :width="tableWidth(120, 100)"
       sortable
     >
       <template #default="scope">
-        <i class="el-icon-video-play"></i>
-        <span style="margin-left: 10px">{{
+        <i v-if="!isMobile()" class="el-icon-video-play"></i>
+        <span :style="!isMobile() ? 'margin-left: 10px' : ''">{{
           scope.row.battle_score.toLocaleString()
         }}</span>
       </template>
@@ -175,7 +182,7 @@ import router from "@/router";
 import { onMounted, computed, ref, reactive } from "vue";
 import { useStore } from "vuex";
 import { foramtDiffName, formatRowClass, calcRating } from "./util";
-import { getFunctions } from "@/utils";
+import { getFunctions, isMobile } from "@/utils";
 import {
   diffOptions,
   scoreRank,
@@ -183,6 +190,7 @@ import {
   fbLamp,
   levelOptions,
   genreOptions,
+  tableWidth,
 } from "./util";
 
 const page = ref(1);

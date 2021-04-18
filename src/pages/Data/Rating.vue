@@ -19,7 +19,6 @@
     </template>
     <el-table
       :data="rating[cas.name]"
-      ref="filterTable"
       style="width: 100%"
       :row-class-name="formatRowClass"
       class="data-table"
@@ -28,6 +27,7 @@
         prop="music_name"
         label="楽曲名"
         sortable
+        :fixed="isMobile() && showDetail"
         :width="tableWidth(320, 180)"
       >
         <template #default="scope">
@@ -86,7 +86,7 @@
       />
       <el-table-column
         label="Rating"
-        width="80"
+        width="70"
         :fixed="isMobile() ? 'right' : false"
       >
         <template #default="scope">

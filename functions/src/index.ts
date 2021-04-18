@@ -3,6 +3,8 @@
 //
 
 export { createKey } from "./createKey";
+export { getKey } from "./getKey";
+
 export { getUserInfo } from "./getUserInfo";
 export { getPlaylog } from "./getPlaylog";
 export { getMusicData } from "./getMusicData";
