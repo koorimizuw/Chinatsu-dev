@@ -77,7 +77,8 @@
       </p>
     </div>
   </div>
-  <el-table :data="filtered" style="width: 100%">
+  <div style="width: 100%; overflow-x: scroll;" v-dragscroll.x>
+  <el-table :data="filtered" style="width: fit-content; max-width: fit-content;">
     <el-table-column type="expand" :width="tableWidth(45, 30)">
       <template #default="props">
         <el-form label-position="left" inline class="table-expand">
@@ -322,6 +323,7 @@
       :width="tableWidth(200, 100)"
     />
   </el-table>
+</div>
 </template>
 
 <script setup lang="ts">
