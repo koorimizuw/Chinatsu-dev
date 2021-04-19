@@ -8,11 +8,6 @@ export const getKey = func.onCall(async (_, ctx) => {
   const uid = ctx.auth.uid;
 
   const querySnapshot = await firestore.collection("users").doc(uid).get();
-  const data = querySnapshot.data();
-  let key = "";
-  if (data) {
-    key = data.key;
-  }
 
-  return key;
+  return querySnapshot.data()?.key ?? "";
 });
