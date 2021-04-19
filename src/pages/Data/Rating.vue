@@ -49,7 +49,9 @@
             class="el-icon-s-flag"
             :class="{ name: !showDetail }"
           ></i>
-          <span style="margin-left: 10px">{{ scope.row.music_name }}</span>
+          <span :style="isMobile() && !showDetail ? `margin-left: 10px` : ``">{{
+            scope.row.music_name
+          }}</span>
         </template>
       </el-table-column>
       <el-table-column

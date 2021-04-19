@@ -5,6 +5,7 @@ import { store } from "./store";
 import firebase from "firebase";
 import ElementPlus from "element-plus";
 import "element-plus/lib/theme-chalk/index.css";
+import { dragscrollNext } from "vue-dragscroll";
 
 const {
   VITE_API_KEY,
@@ -28,4 +29,9 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-createApp(App).use(store).use(router).use(ElementPlus).mount("#app");
+createApp(App)
+  .use(store)
+  .use(router)
+  .use(ElementPlus)
+  .directive("dragscroll", dragscrollNext)
+  .mount("#app");
