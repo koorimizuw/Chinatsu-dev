@@ -13,7 +13,7 @@
       show-password
     ></el-input>
     <div class="btns">
-      <el-button class="btn" @click="submit()">ログイン </el-button>
+      <el-button class="btn" @click="submit()">新規登録</el-button>
     </div>
   </div>
 </template>

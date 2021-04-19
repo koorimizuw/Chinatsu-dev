@@ -9,7 +9,7 @@
       <h2 class="subtitle">ブックマーク生成</h2>
       <p>
         既にブックマークの生成を行った場合は「ブックマークを表示」をクリックしてください
-        <br />再生成すると以前のブックマークが使用できなくなります。
+        <br />再生成すると以前のブックマークが<b>使用できなく</b>なります。
       </p>
       <p>
         生成したことがない場合は「新しいブックマークを生成」をクリックしてください。
@@ -54,7 +54,7 @@ const logout = async () => {
 };
 
 const bookmarklet = computed(() => {
-  return `javascript: (function (d, s, t) {t = d.createElement("chinatsu-token");t.textContent = "${secretKey.value}";d.getElementsByTagName("head")[0].appendChild(t);s = d.createElement("script");s.src = "https://firebasestorage.googleapis.com/v0/b/chinatsu-dev.appspot.com/o/getOngekiScore.js?alt=media&token=51c3e5e2-691c-4a33-a5de-e745f36cd462";d.getElementsByTagName("head")[0].appendChild(s);})(document);`;
+  return `javascript: (function (d, s, t) {t = d.createElement("chinatsu-token");t.textContent = "${secretKey.value}";d.getElementsByTagName("head")[0].appendChild(t);s = d.createElement("script");s.src = "https://chinatsu-dev.github.io/chinatsu-pub/getOngekiScore.js";d.getElementsByTagName("head")[0].appendChild(s);})(document);`;
 });
 
 const showKey = async () => {

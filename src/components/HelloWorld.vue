@@ -1,6 +1,8 @@
 <template>
-  <h1>Welcome to Chinatsu.</h1>
-  <p>メニューから項目を選択してください。</p>
+  <div class="container">
+    <h1>Welcome to Chinatsu.</h1>
+    <p>メニューから項目を選択してください。</p>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -19,5 +21,8 @@ const increment = () => store.commit("increment");
 }
 a {
   color: #42b983;
+}
+.container {
+  margin: 0 10px;
 }
 </style>

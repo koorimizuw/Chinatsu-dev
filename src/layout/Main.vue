@@ -41,6 +41,9 @@ const drawer = ref(false);
 <style lang="scss">
 html {
   font-family: "Noto Sans JP", sans-serif;
+  @media (max-width: 768px) {
+    zoom: 0.9;
+  }
 }
 a {
   text-decoration: none;

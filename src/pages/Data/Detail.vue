@@ -76,9 +76,22 @@
       </p>
     </div>
   </div>
+  <div v-if="isMobile()" class="zoom">
+    <h2>ズーム</h2>
+    <el-slider
+      v-model="zoom"
+      :min="0.5"
+      :max="1.0"
+      :step="0.1"
+      show-input
+      input-size="small"
+    >
+    </el-slider>
+  </div>
   <el-table
     :data="pageSlice"
     style="width: 100%"
+    :style="isMobile() ? `zoom: ${zoom};` : ``"
     :row-class-name="formatRowClass"
   >
     <el-table-column
@@ -95,7 +108,7 @@
         }}</span>
       </template>
     </el-table-column>
-    <el-table-column prop="genre_name" label="カテゴリー" width="130" />
+    <el-table-column prop="genre_name" label="カテゴリー" width="125" />
     <el-table-column
       prop="diff"
       label="難易度"
@@ -123,7 +136,7 @@
     <el-table-column
       prop="technical_score"
       label="スコア"
-      :width="tableWidth(120, 100)"
+      :width="tableWidth(120, 105)"
       sortable
     >
       <template #default="scope">
@@ -150,7 +163,7 @@
     <el-table-column
       prop="battle_score"
       label="バトルスコア"
-      :width="tableWidth(120, 100)"
+      :width="tableWidth(125, 105)"
       sortable
     >
       <template #default="scope">
@@ -163,13 +176,14 @@
     <el-table-column prop="over_damage" label="オーバー ダメージ" width="90" />
   </el-table>
   <el-pagination
+    :small="isMobile()"
     class="page-nav"
     @size-change="handleSizeChange"
     @current-change="handleCurrentChange"
     :current-page="page"
     :page-sizes="pageSizeOptions"
     :page-size="pageSize"
-    layout="total, sizes, prev, pager, next, jumper"
+    layout="prev, pager, next, jumper"
     :total="filtered.length"
   >
   </el-pagination>
@@ -192,6 +206,8 @@ import {
   genreOptions,
   tableWidth,
 } from "./util";
+
+const zoom = ref(0.8);
 
 const page = ref(1);
 const pageSizeOptions = ref([50, 100, 200, 300, 400, 500]);
@@ -349,6 +365,9 @@ const pageSlice = computed(() => {
 }
 
 .filter {
+  margin: 0 10px;
+}
+.zoom {
   margin: 0 10px;
 }
 </style>

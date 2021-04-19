@@ -94,7 +94,7 @@ export const formatRowClass = ({ row }) => {
   }
 };
 
-export const calcRating = (score: number, level: number): number => {
+export const calcRating = (score: number, level: number): string | number => {
   let rt = 0;
   if (score >= 1007500) {
     rt = level + 2.0;
@@ -109,7 +109,7 @@ export const calcRating = (score: number, level: number): number => {
     rt = level - rmrt;
   }
   const res = Math.round(rt * 100) / 100;
-  return res > 0 ? res : 0;
+  return res > 0 ? res.toFixed(2) : 0;
 };
 
 export const cases = [

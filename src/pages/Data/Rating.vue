@@ -1,5 +1,5 @@
 <template>
-  <p>
+  <div class="controller">
     <el-switch
       v-if="isMobile()"
       v-model="showDetail"
@@ -7,7 +7,18 @@
       inactive-text="概略"
     >
     </el-switch>
-  </p>
+  </div>
+  <div v-if="isMobile() && showDetail" class="zoom controller">
+    <el-slider
+      v-model="zoom"
+      :min="0.5"
+      :max="1.0"
+      :step="0.1"
+      show-input
+      input-size="small"
+    >
+    </el-slider>
+  </div>
   <el-card v-for="(cas, i) in cases" :key="i" class="card">
     <template #header>
       <div class="card-header">
@@ -21,6 +32,7 @@
       :data="rating[cas.name]"
       style="width: 100%"
       :row-class-name="formatRowClass"
+      :style="isMobile() && showDetail ? `zoom: ${zoom};` : ``"
       class="data-table"
     >
       <el-table-column
@@ -28,15 +40,16 @@
         label="楽曲名"
         sortable
         :fixed="isMobile() && showDetail"
-        :width="tableWidth(320, 180)"
+        :width="tableWidth(320, 210)"
       >
         <template #default="scope">
           <i v-if="!isMobile()" class="el-icon-tickets"></i>
-          <span
+          <i
+            v-if="isMobile() && !showDetail"
+            class="el-icon-s-flag"
             :class="{ name: !showDetail }"
-            :style="!isMobile() ? 'margin-left: 10px' : ''"
-            >{{ scope.row.music_name }}</span
-          >
+          ></i>
+          <span style="margin-left: 10px">{{ scope.row.music_name }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -83,9 +96,10 @@
         prop="level"
         label="譜面定数"
         width="60"
+        sortable
       />
       <el-table-column
-        label="Rating"
+        label="Rt"
         width="70"
         :fixed="isMobile() ? 'right' : false"
       >
@@ -114,6 +128,8 @@ import {
   tableWidth,
   isMax,
 } from "./util";
+
+const zoom = ref(0.8);
 
 const store = useStore();
 const rating = computed(() => store.state.rating);
@@ -224,5 +240,13 @@ const showDetail = ref(showDetailInfo.value);
   :first-child {
     width: 200px;
   }
+}
+
+.zoom {
+  margin: 0 10px;
+}
+
+.controller {
+  margin: 5px 10px;
 }
 </style>
