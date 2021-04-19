@@ -7,8 +7,6 @@ export const getPlaylog = func.onCall(async (_, ctx) => {
 
   const uid = ctx.auth.uid;
 
-  const playlog = [];
-
   const querySnapshot = await firestore
     .collection("data")
     .doc(uid)
@@ -16,10 +14,5 @@ export const getPlaylog = func.onCall(async (_, ctx) => {
     .doc("info")
     .get();
 
-  const data = querySnapshot.data();
-  for (const item in data) {
-    playlog.push(data[item]);
-  }
-
-  return playlog.reverse();
+  return Object.values({...querySnapshot.data()}).reverse();
 });
