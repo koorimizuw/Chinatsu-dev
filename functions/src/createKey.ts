@@ -14,10 +14,7 @@ export const createKey = func.onCall(async (_, ctx) => {
   const uid = ctx.auth.uid;
   const key = randomPassword(256);
 
-  const resp: secretKey = {
-    uid: uid,
-    key: key,
-  };
+  const resp: secretKey = { uid, key };
 
   await firestore.collection("users").doc(uid).set(resp, { merge: true });
 
