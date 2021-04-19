@@ -6,15 +6,10 @@ import {
   ratingScoreData,
 } from "./types";
 
-export const updateRatingData = func.onRequest(async (req, res) => {
-  res.set("Access-Control-Allow-Origin", "*");
+const cors = require("cors")({ origin: true });
 
-  if (req.method === "OPTIONS") {
-    res.set("Access-Control-Allow-Methods", "POST");
-    res.set("Access-Control-Allow-Headers", "Content-Type");
-    res.set("Access-Control-Max-Age", "86400");
-    res.status(204).send("");
-  } else if (req.method === "POST") {
+export const updateRatingData = func.onRequest(async (req, res) => {
+  return cors(req, res, async () => {
     const body: updateRatingDataRequestBody = req.body;
 
     if (
@@ -98,5 +93,5 @@ export const updateRatingData = func.onRequest(async (req, res) => {
       });
 
     res.status(200).send({ message: "Data saved." });
-  }
+  });
 });

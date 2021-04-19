@@ -28,90 +28,93 @@
         </p>
       </div>
     </template>
-    <el-table
-      :data="rating[cas.name]"
-      style="width: 100%"
-      :row-class-name="formatRowClass"
-      :style="isMobile() && showDetail ? `zoom: ${zoom};` : ``"
-      class="data-table"
-    >
-      <el-table-column
-        prop="music_name"
-        label="楽曲名"
-        sortable
-        :fixed="isMobile() && showDetail"
-        :width="tableWidth(320, 210)"
+    <div style="width: 100%; overflow-x: scroll" v-dragscroll.x>
+      <el-table
+        :data="rating[cas.name]"
+        style="width: fit-content; max-width: fit-content"
+        :row-class-name="formatRowClass"
+        :style="isMobile() && showDetail ? `zoom: ${zoom};` : ``"
+        class="data-table"
       >
-        <template #default="scope">
-          <i v-if="!isMobile()" class="el-icon-tickets"></i>
-          <i
-            v-if="isMobile() && !showDetail"
-            class="el-icon-s-flag"
-            :class="{ name: !showDetail }"
-          ></i>
-          <span :style="isMobile() && !showDetail ? `margin-left: 10px` : ``">{{
-            scope.row.music_name
-          }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        v-if="showDetail"
-        prop="genre_name"
-        label="カテゴリー"
-        width="130"
-      />
-      <el-table-column
-        prop="diff"
-        label="難易度"
-        width="90"
-        v-if="showDetail"
-        :formatter="foramtDiffName"
-      >
-        <template #default="scope">
-          <el-tag class="table-diff" size="medium">{{
-            foramtDiffName(scope.row)
-          }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="technical_score"
-        label="スコア"
-        :width="tableWidth(120, 100)"
-        sortable
-      >
-        <template #default="scope">
-          <i v-if="!isMobile()" class="el-icon-video-play"></i>
-          <span :style="!isMobile() ? 'margin-left: 10px' : ''">{{
-            scope.row.technical_score.toLocaleString()
-          }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="ランク" width="80" v-if="showDetail">
-        <template #default="scope">
-          <el-tag v-if="scope.row.rank" effect="plain">{{
-            scope.row.rank
-          }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column
-        v-if="showDetail"
-        prop="level"
-        label="譜面定数"
-        width="60"
-        sortable
-      />
-      <el-table-column
-        label="Rt"
-        width="70"
-        :fixed="isMobile() ? 'right' : false"
-      >
-        <template #default="scope">
-          <span :style="isMax(scope.row.technical_score)">{{
-            calcRating(scope.row.technical_score, scope.row.level)
-          }}</span>
-        </template>
-      </el-table-column>
-    </el-table>
+        <el-table-column
+          prop="music_name"
+          label="楽曲名"
+          sortable
+          :fixed="isMobile() && showDetail"
+          :width="tableWidth(320, 210)"
+        >
+          <template #default="scope">
+            <i v-if="!isMobile()" class="el-icon-tickets"></i>
+            <i
+              v-if="isMobile() && !showDetail"
+              class="el-icon-s-flag"
+              :class="{ name: !showDetail }"
+            ></i>
+            <span
+              :style="isMobile() && !showDetail ? `margin-left: 10px` : ``"
+              >{{ scope.row.music_name }}</span
+            >
+          </template>
+        </el-table-column>
+        <el-table-column
+          v-if="showDetail"
+          prop="genre_name"
+          label="カテゴリー"
+          width="130"
+        />
+        <el-table-column
+          prop="diff"
+          label="難易度"
+          width="90"
+          v-if="showDetail"
+          :formatter="foramtDiffName"
+        >
+          <template #default="scope">
+            <el-tag class="table-diff" size="medium">{{
+              foramtDiffName(scope.row)
+            }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="technical_score"
+          label="スコア"
+          :width="tableWidth(120, 100)"
+          sortable
+        >
+          <template #default="scope">
+            <i v-if="!isMobile()" class="el-icon-video-play"></i>
+            <span :style="!isMobile() ? 'margin-left: 10px' : ''">{{
+              scope.row.technical_score.toLocaleString()
+            }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="ランク" width="80" v-if="showDetail">
+          <template #default="scope">
+            <el-tag v-if="scope.row.rank" effect="plain">{{
+              scope.row.rank
+            }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
+          v-if="showDetail"
+          prop="level"
+          label="譜面定数"
+          width="60"
+          sortable
+        />
+        <el-table-column
+          label="Rt"
+          width="70"
+          :fixed="isMobile() ? 'right' : false"
+        >
+          <template #default="scope">
+            <span :style="isMax(scope.row.technical_score)">{{
+              calcRating(scope.row.technical_score, scope.row.level)
+            }}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
   </el-card>
 </template>
   

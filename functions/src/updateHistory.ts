@@ -1,14 +1,10 @@
 import { func, firestore, timezone, logger } from "./config";
 import { getUid, getMusicInfo, calcRank } from "./util";
-export const updateHistory = func.onRequest(async (req, res) => {
-  res.set("Access-Control-Allow-Origin", "*");
 
-  if (req.method === "OPTIONS") {
-    res.set("Access-Control-Allow-Methods", "POST");
-    res.set("Access-Control-Allow-Headers", "Content-Type");
-    res.set("Access-Control-Max-Age", "86400");
-    res.status(204).send("");
-  } else if (req.method === "POST") {
+const cors = require("cors")({ origin: true });
+
+export const updateHistory = func.onRequest(async (req, res) => {
+  return cors(req, res, async () => {
     const body = req.body;
 
     if (!body.key || !body.playlog) {
@@ -18,10 +14,12 @@ export const updateHistory = func.onRequest(async (req, res) => {
 
     const uid = (await getUid(body.key).catch((_) => {
       res.status(400).send({ message: "Get user info failed." });
+      return;
     })) as string;
 
     const musicInfo: any = await getMusicInfo().catch((_) => {
       res.status(400).send({ message: "Get music info failed." });
+      return;
     });
 
     const playlog: any = {};
@@ -71,5 +69,5 @@ export const updateHistory = func.onRequest(async (req, res) => {
       .set(playlog, { merge: true });
 
     res.status(200).send({ message: "Data saved." });
-  }
+  });
 });

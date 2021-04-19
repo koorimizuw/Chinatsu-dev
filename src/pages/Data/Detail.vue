@@ -88,93 +88,99 @@
     >
     </el-slider>
   </div>
-  <el-table
-    :data="pageSlice"
-    style="width: 100%"
-    :style="isMobile() ? `zoom: ${zoom};` : ``"
-    :row-class-name="formatRowClass"
-  >
-    <el-table-column
-      prop="music_name"
-      label="楽曲名"
-      sortable
-      fixed="left"
-      :width="tableWidth(320, 180)"
+  <div style="width: 100%; overflow-x: scroll" v-dragscroll.x>
+    <el-table
+      :data="pageSlice"
+      style="width: fit-content; max-width: fit-content"
+      :style="isMobile() ? `zoom: ${zoom};` : ``"
+      :row-class-name="formatRowClass"
     >
-      <template #default="scope">
-        <i v-if="!isMobile()" class="el-icon-tickets"></i>
-        <span :style="!isMobile() ? 'margin-left: 10px' : ''">{{
-          scope.row.music_name
-        }}</span>
-      </template>
-    </el-table-column>
-    <el-table-column prop="genre_name" label="カテゴリー" width="125" />
-    <el-table-column
-      prop="diff"
-      label="難易度"
-      width="90"
-      :formatter="foramtDiffName"
-    >
-      <template #default="scope">
-        <el-tag class="table-diff" size="medium">{{
-          foramtDiffName(scope.row)
-        }}</el-tag>
-      </template>
-    </el-table-column>
-    <el-table-column prop="level" label="譜面定数" width="65" sortable />
-    <el-table-column label="FB" width="60">
-      <template #default="scope">
-        <el-tag v-if="scope.row.is_full_bell" class="fb-tag">FB</el-tag>
-      </template>
-    </el-table-column>
-    <el-table-column label="AB" width="60">
-      <template #default="scope">
-        <el-tag v-if="scope.row.is_all_break" class="ab-tag">AB</el-tag>
-        <el-tag v-if="scope.row.is_full_combo" class="fc-tag">FC</el-tag>
-      </template>
-    </el-table-column>
-    <el-table-column
-      prop="technical_score"
-      label="スコア"
-      :width="tableWidth(120, 105)"
-      sortable
-    >
-      <template #default="scope">
-        <i v-if="!isMobile()" class="el-icon-video-play"></i>
-        <span :style="!isMobile() ? 'margin-left: 10px' : ''">{{
-          scope.row.technical_score.toLocaleString()
-        }}</span>
-      </template>
-    </el-table-column>
-    <el-table-column label="ランク" width="80">
-      <template #default="scope">
-        <el-tag v-if="scope.row.rank" effect="plain">{{
-          scope.row.rank
-        }}</el-tag>
-      </template>
-    </el-table-column>
-    <el-table-column label="Rating" width="70">
-      <template #default="scope">
-        <span>{{
-          calcRating(scope.row.technical_score, scope.row.level)
-        }}</span>
-      </template>
-    </el-table-column>
-    <el-table-column
-      prop="battle_score"
-      label="バトルスコア"
-      :width="tableWidth(125, 105)"
-      sortable
-    >
-      <template #default="scope">
-        <i v-if="!isMobile()" class="el-icon-video-play"></i>
-        <span :style="!isMobile() ? 'margin-left: 10px' : ''">{{
-          scope.row.battle_score.toLocaleString()
-        }}</span>
-      </template>
-    </el-table-column>
-    <el-table-column prop="over_damage" label="オーバー ダメージ" width="90" />
-  </el-table>
+      <el-table-column
+        prop="music_name"
+        label="楽曲名"
+        sortable
+        fixed="left"
+        :width="tableWidth(320, 180)"
+      >
+        <template #default="scope">
+          <i v-if="!isMobile()" class="el-icon-tickets"></i>
+          <span :style="!isMobile() ? 'margin-left: 10px' : ''">{{
+            scope.row.music_name
+          }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="genre_name" label="カテゴリー" width="125" />
+      <el-table-column
+        prop="diff"
+        label="難易度"
+        width="90"
+        :formatter="foramtDiffName"
+      >
+        <template #default="scope">
+          <el-tag class="table-diff" size="medium">{{
+            foramtDiffName(scope.row)
+          }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="level" label="譜面定数" width="65" sortable />
+      <el-table-column label="FB" width="60">
+        <template #default="scope">
+          <el-tag v-if="scope.row.is_full_bell" class="fb-tag">FB</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="AB" width="60">
+        <template #default="scope">
+          <el-tag v-if="scope.row.is_all_break" class="ab-tag">AB</el-tag>
+          <el-tag v-if="scope.row.is_full_combo" class="fc-tag">FC</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="technical_score"
+        label="スコア"
+        :width="tableWidth(120, 105)"
+        sortable
+      >
+        <template #default="scope">
+          <i v-if="!isMobile()" class="el-icon-video-play"></i>
+          <span :style="!isMobile() ? 'margin-left: 10px' : ''">{{
+            scope.row.technical_score.toLocaleString()
+          }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="ランク" width="80">
+        <template #default="scope">
+          <el-tag v-if="scope.row.rank" effect="plain">{{
+            scope.row.rank
+          }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="Rating" width="70">
+        <template #default="scope">
+          <span>{{
+            calcRating(scope.row.technical_score, scope.row.level)
+          }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="battle_score"
+        label="バトルスコア"
+        :width="tableWidth(125, 105)"
+        sortable
+      >
+        <template #default="scope">
+          <i v-if="!isMobile()" class="el-icon-video-play"></i>
+          <span :style="!isMobile() ? 'margin-left: 10px' : ''">{{
+            scope.row.battle_score.toLocaleString()
+          }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="over_damage"
+        label="オーバー ダメージ"
+        width="90"
+      />
+    </el-table>
+  </div>
   <el-pagination
     :small="isMobile()"
     class="page-nav"
