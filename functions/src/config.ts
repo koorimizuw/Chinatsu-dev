@@ -14,7 +14,7 @@ export type Handler = Parameters<typeof func["onRequest"]>[0];
 
 const cors = CORS({ origin: true });
 
-export const corsFn = (handler: Handler): functions.HttpsFunction => {
+export const corsFn = (handler: Handler) => {
   return func.onRequest((req, res) =>
     cors(req, res, (err) => {
       if (err) {
