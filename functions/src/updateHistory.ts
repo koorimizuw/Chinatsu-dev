@@ -1,10 +1,7 @@
-import { func, firestore, timezone, logger } from "./config";
+import { corsFn, firestore, timezone, logger } from "./config";
 import { getUid, getMusicInfo, calcRank } from "./util";
 
-const cors = require("cors")({ origin: true });
-
-export const updateHistory = func.onRequest(async (req, res) => {
-  return cors(req, res, async () => {
+export const updateHistory = corsFn(async (req, res) => {
     const body = req.body;
 
     if (!body.key || !body.playlog) {
@@ -69,5 +66,4 @@ export const updateHistory = func.onRequest(async (req, res) => {
       .set(playlog, { merge: true });
 
     res.status(200).send({ message: "Data saved." });
-  });
 });

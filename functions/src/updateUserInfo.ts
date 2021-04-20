@@ -1,10 +1,7 @@
-import { func, firestore } from "./config";
+import { corsFn, firestore } from "./config";
 import { getUid } from "./util";
 
-const cors = require("cors")({ origin: true });
-
-export const updateUserInfo = func.onRequest(async (req, res) => {
-  return cors(req, res, async () => {
+export const updateUserInfo = corsFn(async (req, res) => {
     const body = req.body;
 
     if (!body.key || !body.info) {
@@ -27,5 +24,4 @@ export const updateUserInfo = func.onRequest(async (req, res) => {
       });
 
     res.status(200).send({ message: "Data saved." });
-  });
 });
