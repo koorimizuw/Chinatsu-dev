@@ -1,11 +1,8 @@
-import { func, firestore, logger } from "./config";
+import { corsFn, firestore, logger } from "./config";
 import { getUid, getMusicInfo, calcRank } from "./util";
 import { scoreData } from "./types";
 
-const cors = require("cors")({ origin: true });
-
-export const updateMusicData = func.onRequest(async (req, res) => {
-  return cors(req, res, async () => {
+export const updateMusicData = corsFn(async (req, res) => {
     const body = req.body;
 
     if (!body.key || !body.score || !body.diff) {
@@ -76,5 +73,4 @@ export const updateMusicData = func.onRequest(async (req, res) => {
       });
 
     res.status(200).send({ message: "Data saved." });
-  });
 });

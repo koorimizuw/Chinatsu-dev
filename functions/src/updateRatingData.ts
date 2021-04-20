@@ -1,4 +1,4 @@
-import { func, firestore, logger } from "./config";
+import { corsFn, firestore, logger } from "./config";
 import { getUid, getMusicInfo, calcRank } from "./util";
 import {
   updateRatingDataRequestBody,
@@ -6,10 +6,7 @@ import {
   ratingScoreData,
 } from "./types";
 
-const cors = require("cors")({ origin: true });
-
-export const updateRatingData = func.onRequest(async (req, res) => {
-  return cors(req, res, async () => {
+export const updateRatingData = corsFn(async (req, res) => {
     const body: updateRatingDataRequestBody = req.body;
 
     if (
@@ -93,5 +90,4 @@ export const updateRatingData = func.onRequest(async (req, res) => {
       });
 
     res.status(200).send({ message: "Data saved." });
-  });
 });
