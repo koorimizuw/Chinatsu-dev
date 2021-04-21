@@ -22,27 +22,27 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/data",
     name: "Data",
-    component: () => import("@/pages/Data/Index.vue"),
+    component: () => import("@/pages/data/Index.vue"),
   },
   {
     path: "/data/playlog",
     name: "Playlog",
-    component: () => import("@/pages/Data/Playlog.vue"),
+    component: () => import("@/pages/data/Playlog.vue"),
   },
   {
     path: "/data/detail",
     name: "Detail",
-    component: () => import("@/pages/Data/Detail.vue"),
+    component: () => import("@/pages/data/Detail.vue"),
   },
   {
     path: "/data/rating",
     name: "Rating",
-    component: () => import("@/pages/Data/Rating.vue"),
+    component: () => import("@/pages/data/Rating.vue"),
   },
   {
     path: "/setting",
     name: "Setting",
-    component: () => import("@/pages/Setting.vue"),
+    component: () => import("@/pages/setting/Index.vue"),
   },
 ];
 

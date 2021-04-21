@@ -1,81 +1,15 @@
 <template>
-  <div class="filter">
-    <h2>
-      フィルター<el-button
-        class="title-icon"
-        :icon="filterOpen ? `el-icon-arrow-up` : `el-icon-arrow-down`"
-        circle
-        @click="openFilter"
-      ></el-button>
-    </h2>
-    <div v-if="filterOpen">
-      <div class="subtitle">難易度</div>
-      <p>
-        <el-checkbox-group v-model="opts.diff">
-          <el-checkbox-button
-            v-for="opts in diffOptions"
-            :label="opts.value"
-            :key="opts"
-            >{{ opts.label }}
-          </el-checkbox-button>
-        </el-checkbox-group>
-      </p>
-      <div class="subtitle">レベル</div>
-      <p>
-        <el-checkbox-group v-model="opts.level">
-          <el-checkbox-button
-            v-for="opts in levelOptions"
-            :label="opts"
-            :key="opts"
-            >{{ opts }}
-          </el-checkbox-button>
-        </el-checkbox-group>
-      </p>
-      <div class="subtitle">ジャンル</div>
-      <p>
-        <el-checkbox-group v-model="opts.genre">
-          <el-checkbox-button
-            v-for="opts in genreOptions"
-            :label="opts"
-            :key="opts"
-            >{{ opts }}
-          </el-checkbox-button>
-        </el-checkbox-group>
-      </p>
-      <div class="subtitle">スコアランク</div>
-      <p>
-        <el-checkbox-group v-model="opts.score">
-          <el-checkbox-button
-            v-for="opts in scoreRank"
-            :label="opts.value"
-            :key="opts"
-            >{{ opts.label }}
-          </el-checkbox-button>
-        </el-checkbox-group>
-      </p>
-      <div class="subtitle">クリアランプ</div>
-      <p>
-        <el-checkbox-group v-model="opts.ablamp">
-          <el-checkbox-button
-            v-for="opts in abLamp"
-            :label="opts.value"
-            :key="opts"
-            >{{ opts.label }}
-          </el-checkbox-button>
-        </el-checkbox-group>
-      </p>
-      <p>
-        <el-checkbox-group v-model="opts.fblamp">
-          <el-checkbox-button
-            v-for="opts in fbLamp"
-            :label="opts.value"
-            :key="opts"
-            >{{ opts.label }}
-          </el-checkbox-button>
-        </el-checkbox-group>
-      </p>
-    </div>
-  </div>
+  <Filter
+    :data="detail"
+    :update="updateFilteredData"
+    name
+    diff
+    level
+    genre
+    score
+    ablamp
+    fblamp
+  />
   <div v-if="isMobile()" class="zoom">
     <h2>ズーム</h2>
     <el-slider
@@ -189,7 +123,11 @@
     :current-page="page"
     :page-sizes="pageSizeOptions"
     :page-size="pageSize"
-    layout="prev, pager, next, jumper"
+    :layout="
+      isMobile()
+        ? `prev, pager, next, jumper`
+        : `total, sizes, prev, pager, next, jumper`
+    "
     :total="filtered.length"
   >
   </el-pagination>
@@ -213,6 +151,14 @@ import {
   tableWidth,
 } from "./util";
 
+//@ts-ignore
+import Filter from "@/components/Filter.vue";
+
+const filtered = ref([]);
+const updateFilteredData = (data) => {
+  filtered.value = data;
+};
+
 const zoom = ref(0.8);
 
 const page = ref(1);
@@ -226,16 +172,6 @@ const handleSizeChange = (val) => {
 const handleCurrentChange = (val) => {
   page.value = val;
 };
-
-const filterOpen = ref(false);
-const opts = reactive({
-  diff: [],
-  score: [],
-  ablamp: [],
-  fblamp: [],
-  level: [],
-  genre: [],
-});
 
 const store = useStore();
 
@@ -254,45 +190,15 @@ onMounted(async () => {
   }
 });
 
-const openFilter = () => {
-  filterOpen.value = !filterOpen.value;
-};
-
-const filtered = computed(() => {
-  let items = [];
-  for (let item of detail.value) {
-    if (opts.diff.length !== 0 && !opts.diff.includes(item.diff)) {
-      continue;
-    }
-    if (opts.score.length !== 0 && !opts.score.includes(item.rank)) {
-      continue;
-    }
-    if (opts.genre.length !== 0 && !opts.genre.includes(item.genre_name)) {
-      continue;
-    }
-    if (opts.ablamp.length !== 0 && !opts.ablamp.includes(item.ab_lamp)) {
-      continue;
-    }
-    if (opts.fblamp.length !== 0 && !opts.fblamp.includes(item.fb_lamp)) {
-      continue;
-    }
-    if (opts.level.length !== 0 && !opts.level.includes(item.level_name)) {
-      continue;
-    }
-    items.push(item);
-  }
-
-  return items;
-});
-
 const pageSlice = computed(() => {
+  const data = filtered.value.length ? filtered.value : detail.value;
   const itemStart = (page.value - 1) * pageSize.value;
   const itemEnd =
-    itemStart + pageSize.value > filtered.value.length
-      ? filtered.value.length
+    itemStart + pageSize.value > data.length
+      ? data.length
       : itemStart + pageSize.value;
 
-  return filtered.value.slice(itemStart, itemEnd);
+  return data.slice(itemStart, itemEnd);
 });
 </script>
 

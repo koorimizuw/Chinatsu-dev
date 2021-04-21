@@ -1,85 +1,17 @@
 <template>
-  <div class="filter">
-    <h2>
-      フィルター
-      <el-button
-        class="title-icon"
-        :icon="filterOpen ? `el-icon-arrow-up` : `el-icon-arrow-down`"
-        circle
-        @click="openFilter"
-      >
-      </el-button>
-    </h2>
-    <div v-if="filterOpen">
-      <div class="subtitle">曲名</div>
-      <p>
-        <el-input
-          placeholder="曲名で絞り込む"
-          v-model="opts.name"
-          clearable
-          style="max-width: 500px"
-        >
-        </el-input>
-      </p>
-      <div class="subtitle">難易度</div>
-      <p>
-        <el-checkbox-group v-model="opts.diff">
-          <el-checkbox-button
-            v-for="opts in diffOptions"
-            :label="opts.value"
-            :key="opts"
-            >{{ opts.label }}
-          </el-checkbox-button>
-        </el-checkbox-group>
-      </p>
-      <div class="subtitle">ジャンル</div>
-      <p>
-        <el-checkbox-group v-model="opts.genre">
-          <el-checkbox-button
-            v-for="opts in genreOptions"
-            :label="opts"
-            :key="opts"
-            >{{ opts }}
-          </el-checkbox-button>
-        </el-checkbox-group>
-      </p>
-      <div class="subtitle">スコアランク</div>
-      <p>
-        <el-checkbox-group v-model="opts.score">
-          <el-checkbox-button
-            v-for="opts in scoreRank"
-            :label="opts.value"
-            :key="opts"
-            >{{ opts.label }}
-          </el-checkbox-button>
-        </el-checkbox-group>
-      </p>
-      <div class="subtitle">クリアランプ</div>
-      <p>
-        <el-checkbox-group v-model="opts.ablamp">
-          <el-checkbox-button
-            v-for="opts in abLamp"
-            :label="opts.value"
-            :key="opts"
-            >{{ opts.label }}
-          </el-checkbox-button>
-        </el-checkbox-group>
-      </p>
-      <p>
-        <el-checkbox-group v-model="opts.fblamp">
-          <el-checkbox-button
-            v-for="opts in fbLamp"
-            :label="opts.value"
-            :key="opts"
-            >{{ opts.label }}
-          </el-checkbox-button>
-        </el-checkbox-group>
-      </p>
-    </div>
-  </div>
+  <Filter
+    :data="playlog"
+    :update="updateFilteredData"
+    name
+    diff
+    genre
+    score
+    ablamp
+    fblamp
+  />
   <div style="width: 100%; overflow-x: scroll" v-dragscroll.x>
     <el-table
-      :data="filtered"
+      :data="filtered.length ? filtered : playlog"
       style="width: fit-content; max-width: fit-content"
     >
       <el-table-column type="expand" :width="tableWidth(45, 30)">
@@ -351,17 +283,14 @@ import {
   tableWidth,
   isMax,
 } from "./util";
-import { diffOptions, scoreRank, genreOptions, abLamp, fbLamp } from "./util";
 
-const filterOpen = ref(false);
-const opts = reactive({
-  name: "",
-  diff: [],
-  score: [],
-  genre: [],
-  ablamp: [],
-  fblamp: [],
-});
+//@ts-ignore
+import Filter from "@/components/Filter.vue";
+
+const filtered = ref([]);
+const updateFilteredData = (data) => {
+  filtered.value = data;
+};
 
 const store = useStore();
 
@@ -378,36 +307,6 @@ onMounted(async () => {
       loadingInstance.close();
     }
   }
-});
-
-const openFilter = () => {
-  filterOpen.value = !filterOpen.value;
-};
-
-const filtered = computed(() => {
-  let tmp = [];
-  for (let item of playlog.value) {
-    if (opts.name && !item.music_name.includes(opts.name)) {
-      continue;
-    }
-    if (opts.diff.length !== 0 && !opts.diff.includes(item.diff)) {
-      continue;
-    }
-    if (opts.genre.length !== 0 && !opts.genre.includes(item.genre_name)) {
-      continue;
-    }
-    if (opts.score.length !== 0 && !opts.score.includes(item.rank)) {
-      continue;
-    }
-    if (opts.ablamp.length !== 0 && !opts.ablamp.includes(item.ab_lamp)) {
-      continue;
-    }
-    if (opts.fblamp.length !== 0 && !opts.fblamp.includes(item.fb_lamp)) {
-      continue;
-    }
-    tmp.push(item);
-  }
-  return tmp;
 });
 
 const showDetailInfo = computed(() => {
