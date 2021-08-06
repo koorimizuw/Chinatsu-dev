@@ -139,6 +139,10 @@ const zoom = ref(0.8);
 const store = useStore();
 const rating = computed(() => store.state.rating);
 
+const average = rating.value.reduce((acc, cur)=> {
+  return calcRating(acc.technical_score, cur.level)
+})
+
 onMounted(async () => {
   if (!Object.keys(rating.value).length) {
     let loadingInstance = ElLoading.service({ fullscreen: true });
